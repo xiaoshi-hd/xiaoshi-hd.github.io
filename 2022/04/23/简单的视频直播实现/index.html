@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xiaoshi-hd.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="概述参考自CSDN雷霄骅博客：https:&#x2F;&#x2F;blog.csdn.net&#x2F;leixiaohua1020&#x2F;article&#x2F;details&#x2F;18893769 视频播放器播放一个互联网上的视频文件，需要经过以下几个步骤：解协议，解封装，解码视音频，视音频同步。如果播放本地文件则不需要解协议，为以下几个步骤：解封装，解码视音频，视音频同步。 **&#x3D;&#x3D;解协议&#x3D;&#x3D;**的作用，就是将流媒体协议的数据，解析为标准">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简单的视频直播实现">
+<meta property="og:url" content="https://xiaoshi-hd.github.io/2022/04/23/%E7%AE%80%E5%8D%95%E7%9A%84%E8%A7%86%E9%A2%91%E7%9B%B4%E6%92%AD%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="小师的Blog">
+<meta property="og:description" content="概述参考自CSDN雷霄骅博客：https:&#x2F;&#x2F;blog.csdn.net&#x2F;leixiaohua1020&#x2F;article&#x2F;details&#x2F;18893769 视频播放器播放一个互联网上的视频文件，需要经过以下几个步骤：解协议，解封装，解码视音频，视音频同步。如果播放本地文件则不需要解协议，为以下几个步骤：解封装，解码视音频，视音频同步。 **&#x3D;&#x3D;解协议&#x3D;&#x3D;**的作用，就是将流媒体协议的数据，解析为标准">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220303123119.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220303123247.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220303123611.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220303123709.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220303151606.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220303155618.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220311171513.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220311171831.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220311172110.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220303171106.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220311174629.gif">
+<meta property="article:published_time" content="2022-04-23T10:29:17.000Z">
+<meta property="article:modified_time" content="2022-04-23T10:31:19.897Z">
+<meta property="article:author" content="XiaoShi">
+<meta property="article:tag" content="RTSP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220303123119.png">
+
+<link rel="canonical" href="https://xiaoshi-hd.github.io/2022/04/23/%E7%AE%80%E5%8D%95%E7%9A%84%E8%A7%86%E9%A2%91%E7%9B%B4%E6%92%AD%E5%AE%9E%E7%8E%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>简单的视频直播实现 | 小师的Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">小师的Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://xiaoshi-hd.github.io/2022/04/23/%E7%AE%80%E5%8D%95%E7%9A%84%E8%A7%86%E9%A2%91%E7%9B%B4%E6%92%AD%E5%AE%9E%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xiaoshi.png">
+      <meta itemprop="name" content="XiaoShi">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小师的Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          简单的视频直播实现
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-04-23 18:29:17 / 修改时间：18:31:19" itemprop="dateCreated datePublished" datetime="2022-04-23T18:29:17+08:00">2022-04-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%A4%84%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">音视频处理</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>参考自CSDN雷霄骅博客：<a target="_blank" rel="noopener" href="https://blog.csdn.net/leixiaohua1020/article/details/18893769">https://blog.csdn.net/leixiaohua1020/article/details/18893769</a></p>
+<p>视频播放器播放一个互联网上的视频文件，需要经过以下几个步骤：<strong>解协议，解封装，解码视音频，视音频同步</strong>。如果播放本地文件则不需要解协议，为以下几个步骤：解封装，解码视音频，视音频同步。</p>
+<p>**==解协议==**的作用，就是将流媒体协议的数据，解析为标准的相应的封装格式数据。视音频在网络上传播的时候，常常采用各种流媒体协议，例如HTTP，RTMP，或是MMS等等。这些协议在传输视音频数据的同时，也会传输一些信令数据。这些信令数据包括对播放的控制（播放，暂停，停止），或者对网络状态的描述等。解协议的过程中会去除掉信令数据而只保留视音频数据。例如，采用RTMP协议传输的数据，经过解协议操作后，输出FLV格式的数据。</p>
+<p>==流媒体协议==是服务器与客户端之间通信遵循的规定。常用的流媒体协议如下：</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220303123119.png" alt="image-20220303123119557"></p>
+<p>**==解封装==**的作用，就是将输入的封装格式的数据，分离成为音频流压缩编码数据和视频流压缩编码数据。封装格式种类很多，例如MP4，MKV，RMVB，TS，FLV，AVI等等，它的作用就是将已经压缩编码的视频数据和音频数据按照一定的格式放到一起。例如，FLV格式的数据，经过解封装操作后，输出H.264编码的视频码流和AAC编码的音频码流。</p>
+<p>==封装格式==：把视频数据和音频数据打包成一个文件的规范。常见的封装格式如下：</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220303123247.png" alt="image-20220303123246963"></p>
+<p>有些封装格式支持的音视频编码标准十分广泛，应该算比较优秀的封装格式，比如MKV；而有些封装格式支持的音视频编码标准很少，应该属于落后的封装格式，比如RMVB。</p>
+<p>**==解码==**的作用，就是将视频/音频压缩编码数据，解码成为非压缩的视频/音频原始数据。音频的压缩编码标准包含AAC，MP3，AC-3等等，视频的压缩编码标准则包含H.264，MPEG2，VC-1等等。解码是整个系统中最重要也是最复杂的一个环节。通过解码，压缩编码的视频数据输出成为非压缩的颜色数据，例如YUV420P，RGB等等；压缩编码的音频数据输出成为非压缩的音频抽样数据，例如PCM数据。</p>
+<p>==视频编码==的主要作用是将视频像素数据（RGB，YUV等）压缩成为视频码流，从而降低视频的数据量。如果视频不经过压缩编码的话，体积通常是非常大的，一部电影可能就要上百G的空间。视频编码是视音频技术中最重要的技术之一。常见的视频编码格式如下：</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220303123611.png" alt="image-20220303123611458"></p>
+<p>常用的音频编码格式如下：</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220303123709.png" alt="image-20220303123709785"></p>
+<p>==码流==（Data Rate）也叫码率，指的是视频文件在单位时间内使用的数据流量，对视频编码画面质量的控制起到重要作用。码率(kbps)=文件大小(KB) * 8 / 时间(秒)，比如800kbps代表编码器每秒产生800kbit（或100KB）的数据。在同样分辨率下，视频文件码流越大，压缩比就越小，画面质量就越好；几乎所有编码格式都比较重视如何用最低的码率达到最少的失真。同等码率的前提下，各种编码格式的视频质量MPEG-2&lt;H.263&lt;MPEG-4&lt;H.264/AVC。</p>
+<p>**==视音频同步==**的作用，就是根据解封装模块处理过程中获取到的参数信息，同步解码出来的视频和音频数据，并将视频音频数据送至系统的显卡和声卡播放出来。</p>
+<p>==分辨率==和==帧率==：</p>
+<p>分辨率720P、1080P表示的是“视频像素的总行数”，例如：720P表示的是视频有720行像素，1080P则表示视频总共有1080行的像素数。1080P分辨率的摄像机像素数是1920*1080。2K、4K等是表示“视频像素的总列数”；例如4K，表示的是视频有4000列的像素数，4K分辨率的摄像机像素数有两种，第一种是：4096*2160；第二种是：3840*2160。</p>
+<p>帧率是指每秒图像的数量，一帧代表的就是一副静止的画面。影响画面流畅度，一般20帧的FPS就已经可以达到很好的用户体验。</p>
+<p>如果不做码率大小上的限制，那么分辨率越高，画质越细腻；帧率越高，视频越流畅，但相应的码率也会很大，因为每秒钟需要用更多的数据来承载较高的清晰度和流畅度。</p>
+<p>如果限定视频的码率，就要调整分辨率和帧率来实现视频的播放。</p>
+<h3 id="FFmpeg"><a href="#FFmpeg" class="headerlink" title="FFmpeg"></a>FFmpeg</h3><p>参考自CSDN雷霄骅博客：<a target="_blank" rel="noopener" href="https://blog.csdn.net/leixiaohua1020/article/details/15811977">https://blog.csdn.net/leixiaohua1020/article/details/15811977</a></p>
+<p>FFmpeg是一个完整的，跨平台的解决方案，用于记录，转换和流化音视频。可作为视频播放器以及音视频转码工具的内核。</p>
+<p>ffmpeg的官方网站是：<a target="_blank" rel="noopener" href="http://ffmpeg.org/">http://ffmpeg.org/</a></p>
+<p>github开源地址：<a target="_blank" rel="noopener" href="https://github.com/FFmpeg/FFmpeg">https://github.com/FFmpeg/FFmpeg</a></p>
+<p>该网站中的FFMPEG分为3个版本：<strong>Static，Shared，Dev</strong>。</p>
+<p>前两个版本可以直接在命令行中使用，他们的区别在于：Static里面只有3个应用程序：ffmpeg.exe，ffplay.exe，ffprobe.exe，每个exe的体积都很大，相关的Dll已经被编译到exe里面去了。Shared里面除了3个应用程序：ffmpeg.exe，ffplay.exe，ffprobe.exe之外，还有一些Dll，比如说avcodec-54.dll之类的。Shared里面的exe体积很小，他们在运行的时候，到相应的Dll中调用功能。</p>
+<p>Dev版本是用于开发的，里面包含了库文件xxx.lib以及头文件xxx.h，这个版本不包含exe文件。</p>
+<p>==ffmpeg==是用于转码的应用程序。</p>
+<p>将input.avi转码成output.ts，并设置视频的码率为640kbps</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -<span class="selector-tag">i</span> <span class="selector-tag">input</span><span class="selector-class">.avi</span> -<span class="selector-tag">b</span>:v <span class="number">640</span>k output.ts</span><br></pre></td></tr></table></figure>
+
+<p>==ffplay==是用于播放的应用程序。</p>
+<p>播放test.avi</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffplay test<span class="selector-class">.avi</span></span><br></pre></td></tr></table></figure>
+
+<p>==ffprobe==是用于查看文件格式的应用程序。</p>
+<h3 id="VLC"><a href="#VLC" class="headerlink" title="VLC"></a>VLC</h3><p>VLC 是一款自由、开源的跨平台多媒体播放器及框架，可播放大多数多媒体文件，以及 DVD、音频 CD、VCD 及==各类流媒体协议==。                </p>
+<p>官网：<a target="_blank" rel="noopener" href="https://www.videolan.org/">https://www.videolan.org/</a></p>
+<h3 id="EasyDrawin"><a href="#EasyDrawin" class="headerlink" title="EasyDrawin"></a>EasyDrawin</h3><p>EasyDarwin是国内基于Darwin Streaming Server二次开发的流媒体服务器。通过流媒体服务器可进行推流和拉流。</p>
+<p>Darwin Streaming Server为苹果公司视频流解决方案的开源版本。</p>
+<p>EasyDarwin官方网址：<a target="_blank" rel="noopener" href="http://www.easydarwin.org/">http://www.easydarwin.org/</a><br>Github开源地址：<a target="_blank" rel="noopener" href="https://github.com/EasyDarwin/EasyDarwin">https://github.com/EasyDarwin/EasyDarwin</a> </p>
+<p><a target="_blank" rel="noopener" href="https://github.com/EasyDarwin/EasyDarwin/releases">下载解压 release 包</a></p>
+<p>Windows可直接运行EasyDarwin.exe</p>
+<p>打开浏览器输入 <a href="http://localhost:10008,，进入控制页面，默认用户名密码是admin/admin">http://localhost:10008,，进入控制页面，默认用户名密码是admin/admin</a></p>
+<p>测试==推流==</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -re -i C:\Users\Administrator\Videos\test.mkv -rtsp_transport tcp -vcodec h264 -f rtsp rtsp://localhost/test</span><br><span class="line"></span><br><span class="line">ffmpeg -re -i C:\Users\Administrator\Videos\test.mkv -rtsp_transport udp -vcodec h264 -f rtsp rtsp://localhost/test</span><br></pre></td></tr></table></figure>
+
+<p>测试==拉流==</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ffplay -rtsp_transport tcp rtsp://localhost/test</span><br><span class="line"></span><br><span class="line">ffplay rtsp://localhost/test</span><br></pre></td></tr></table></figure>
+
+<p>也可以通过VLC播放器直接播放。</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220303151606.png" alt="image-20220303151606014"></p>
+<p>在进行推流时，多个客户端进行拉流是同步的，推流完成之后就不能拉流了。这算是视频直播的一种方案。</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220303155618.png" alt="image-20220303155618763"></p>
+<p>教程可参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/112082321">https://zhuanlan.zhihu.com/p/112082321</a></p>
+<p>RTSP协议可参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/leixiaohua1020/article/details/11955341">https://blog.csdn.net/leixiaohua1020/article/details/11955341</a></p>
+<h3 id="海康威视摄像头拉流"><a href="#海康威视摄像头拉流" class="headerlink" title="海康威视摄像头拉流"></a>海康威视摄像头拉流</h3><p>海康威视摄像头与电脑通过网线连接，在设备网络搜索可以查看：</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220311171513.png" alt="image-20220311171513658"></p>
+<p>之后使用IE浏览器访问该IP可查看摄像头视频信息，还可在配置界面对摄像头进行配置：</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220311171831.png" alt="image-20220311171830721"></p>
+<p>海康摄像头的监控地址为：<code>rtsp://admin:12345@192.168.1.64/h264/ch1/main/av_stream</code>（帐户，密码，ip,端口，…..）</p>
+<p>使用VLC可进行拉流查看：</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220311172110.png" alt="image-20220311172109694"></p>
+<h3 id="浏览器播放rtsp流媒体"><a href="#浏览器播放rtsp流媒体" class="headerlink" title="浏览器播放rtsp流媒体"></a>浏览器播放rtsp流媒体</h3><p>博客 <a target="_blank" rel="noopener" href="https://blog.csdn.net/zs245584910/article/details/106712881/">https://blog.csdn.net/zs245584910/article/details/106712881/</a></p>
+<p>通过==node-rtsp-stream==：<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/node-rtsp-stream%E8%BF%9B%E8%A1%8C%E6%8B%89%E6%B5%81%EF%BC%8C%E9%9C%80%E8%A6%81%E9%85%8D%E7%BD%AE==ffmpeg==%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E3%80%82">https://www.npmjs.com/package/node-rtsp-stream进行拉流，需要配置==ffmpeg==环境变量。</a></p>
+<p>这种方案需要通过node-rtsp-stream开启拉流服务，之后html再去调用这个服务实现视频播放。使用的视频播放器是==jsmpeg==(<a target="_blank" rel="noopener" href="https://github.com/phoboslab/jsmpeg)%EF%BC%8C%E8%BF%98%E9%9C%80%E8%A6%81%E5%8D%95%E7%8B%AC%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85%E3%80%82%E6%84%9F%E8%A7%89%E8%BF%98%E6%98%AF%E6%9C%89%E7%82%B9%E9%BA%BB%E7%83%A6%E3%80%82">https://github.com/phoboslab/jsmpeg)，还需要单独下载安装。感觉还是有点麻烦。</a></p>
+<p>我实现了一下，文件目录如下：</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220303171106.png" alt="image-20220303171106045"></p>
+<p>运行步骤如下：</p>
+<ol>
+<li><p>运行EasyDarwin.exe</p>
+</li>
+<li><p>开启推流（需要win+R打开Windows Terminal才能执行ffmpeg命令）</p>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -re -i C:\Users\Shi\Desktop\htmlvideo\bigdata.mp4 -rtsp_transport tcp -vcodec h264 -f rtsp rtsp://localhost/test</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>开启拉流</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node .\server.js</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>打开html文件进行播放</li>
+</ol>
+<p>海康威视摄像头的话只需要开启拉流之后打开html播放即可。</p>
+<p>博客 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/gaoji/p/6872365.html%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%E6%98%AF%EF%BC%9Anginx%E6%90%AD%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%8Cffmpeg%E8%BD%AC%E7%A0%81%EF%BC%8Cjwplayer%E6%92%AD%E6%94%BE%E3%80%82">https://www.cnblogs.com/gaoji/p/6872365.html的实现方式是：nginx搭的服务器，ffmpeg转码，jwplayer播放。</a></p>
+<p>核心就是把将rtsp协议的视频流转成rtmp，之后让播放器播放。</p>
+<p>其他解决方案可参考：<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/29973696/answer/2034360284">https://www.zhihu.com/question/29973696/answer/2034360284</a></p>
+<p>效果对比，左下角是海康的网站，左上角是VLC，右侧是html文件播放：</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220311174629.gif"></p>
+<h3 id="视频点播"><a href="#视频点播" class="headerlink" title="视频点播"></a>视频点播</h3><p>HTML5的video标签属于HTTP渐进流式下载，不需要流媒体服务器，普通HTTP服务器就可以。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;Content-Type&quot;</span> <span class="attr">content</span>=<span class="string">&quot;text/html; charset=utf-8&quot;</span> /&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">title</span>&gt;</span></span><br><span class="line">			video</span><br><span class="line">		<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">video</span> <span class="attr">width</span>=<span class="string">&quot;720&quot;</span> <span class="attr">height</span>=<span class="string">&quot;480&quot;</span> <span class="attr">controls</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">source</span> <span class="attr">src</span>=<span class="string">&quot;bigdata.mp4&quot;</span> <span class="attr">type</span>=<span class="string">&quot;video/mp4&quot;</span>&gt;</span></span><br><span class="line">            Your browser does not support the video tag.</span><br><span class="line">        <span class="tag">&lt;/<span class="name">video</span>&gt;</span> </span><br><span class="line">	<span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>播放地址：<a target="_blank" rel="noopener" href="https://www.cdfgroup.xyz/video/videotest.html">https://www.cdfgroup.xyz/video/videotest.html</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RTSP/" rel="tag"># RTSP</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/04/23/Arduino%E9%81%A5%E6%8E%A7%E5%B0%8F%E8%BD%A6/" rel="prev" title="Arduino遥控小车">
+      <i class="fa fa-chevron-left"></i> Arduino遥控小车
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/04/23/Python%E7%A6%BB%E6%95%A3%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/" rel="next" title="Python离散数据处理">
+      Python离散数据处理 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FFmpeg"><span class="nav-number">2.</span> <span class="nav-text">FFmpeg</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VLC"><span class="nav-number">3.</span> <span class="nav-text">VLC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EasyDrawin"><span class="nav-number">4.</span> <span class="nav-text">EasyDrawin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%B7%E5%BA%B7%E5%A8%81%E8%A7%86%E6%91%84%E5%83%8F%E5%A4%B4%E6%8B%89%E6%B5%81"><span class="nav-number">5.</span> <span class="nav-text">海康威视摄像头拉流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E6%92%AD%E6%94%BErtsp%E6%B5%81%E5%AA%92%E4%BD%93"><span class="nav-number">6.</span> <span class="nav-text">浏览器播放rtsp流媒体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%86%E9%A2%91%E7%82%B9%E6%92%AD"><span class="nav-number">7.</span> <span class="nav-text">视频点播</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="XiaoShi"
+      src="/images/xiaoshi.png">
+  <p class="site-author-name" itemprop="name">XiaoShi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xiaoshi-hd" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiaoshi-hd" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">XiaoShi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+</body>
+</html>

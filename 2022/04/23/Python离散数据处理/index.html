@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xiaoshi-hd.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Python数据处理Scipy数学处理模块 https:&#x2F;&#x2F;docs.scipy.org&#x2F;doc&#x2F;scipy&#x2F;reference&#x2F;index.html    模块 功能    scipy.cluster 矢量量化 &#x2F; K-均值   scipy.constants 物理和数学常数   &#x3D;&#x3D;scipy.fftpack&#x3D;&#x3D; 傅里叶变换   &#x3D;&#x3D;scipy.integrate&#x3D;&#x3D; 积分程序   scipy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python离散数据处理">
+<meta property="og:url" content="https://xiaoshi-hd.github.io/2022/04/23/Python%E7%A6%BB%E6%95%A3%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/index.html">
+<meta property="og:site_name" content="小师的Blog">
+<meta property="og:description" content="Python数据处理Scipy数学处理模块 https:&#x2F;&#x2F;docs.scipy.org&#x2F;doc&#x2F;scipy&#x2F;reference&#x2F;index.html    模块 功能    scipy.cluster 矢量量化 &#x2F; K-均值   scipy.constants 物理和数学常数   &#x3D;&#x3D;scipy.fftpack&#x3D;&#x3D; 傅里叶变换   &#x3D;&#x3D;scipy.integrate&#x3D;&#x3D; 积分程序   scipy">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220308115529.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220321111100.gif">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220321110304.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220309211700.jpeg">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220309213034.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220309214808.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220309215948.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220311103739.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220311102626.webp">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220311104110.png">
+<meta property="og:image" content="http://img.mp.itc.cn/upload/20170406/65863ae5e55748c2b0c1ecba52e60983_th.jpeg">
+<meta property="og:image" content="http://img.mp.itc.cn/upload/20170406/6b5528e269ad4a65978a233fb0c50a86.jpeg">
+<meta property="og:image" content="http://img.mp.itc.cn/upload/20170406/a65bba633ec6442b92c81b7d03b7503b.jpeg">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220310111805.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220310112303.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20211214150128.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220310100249.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20211214105503.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220311113059.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20211210194952.jpg">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20211210195404.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220308154408.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220310221425.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220310190212.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220310190452.png">
+<meta property="article:published_time" content="2022-04-23T10:34:22.000Z">
+<meta property="article:modified_time" content="2022-04-23T10:36:25.682Z">
+<meta property="article:author" content="XiaoShi">
+<meta property="article:tag" content="Arduino">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220308115529.png">
+
+<link rel="canonical" href="https://xiaoshi-hd.github.io/2022/04/23/Python%E7%A6%BB%E6%95%A3%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Python离散数据处理 | 小师的Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">小师的Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://xiaoshi-hd.github.io/2022/04/23/Python%E7%A6%BB%E6%95%A3%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xiaoshi.png">
+      <meta itemprop="name" content="XiaoShi">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小师的Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python离散数据处理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-04-23 18:34:22 / 修改时间：18:36:25" itemprop="dateCreated datePublished" datetime="2022-04-23T18:34:22+08:00">2022-04-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A1%AC%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">硬件</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Python数据处理"><a href="#Python数据处理" class="headerlink" title="Python数据处理"></a>Python数据处理</h2><p><strong>Scipy数学处理模块</strong></p>
+<p><a target="_blank" rel="noopener" href="https://docs.scipy.org/doc/scipy/reference/index.html">https://docs.scipy.org/doc/scipy/reference/index.html</a></p>
+<table>
+<thead>
+<tr>
+<th align="left">模块</th>
+<th align="left">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">scipy.cluster</td>
+<td align="left">矢量量化 / K-均值</td>
+</tr>
+<tr>
+<td align="left">scipy.constants</td>
+<td align="left">物理和数学常数</td>
+</tr>
+<tr>
+<td align="left">==scipy.fftpack==</td>
+<td align="left">傅里叶变换</td>
+</tr>
+<tr>
+<td align="left">==scipy.integrate==</td>
+<td align="left">积分程序</td>
+</tr>
+<tr>
+<td align="left">scipy.interpolate</td>
+<td align="left">插值</td>
+</tr>
+<tr>
+<td align="left">==scipy.io==</td>
+<td align="left">数据输入输出，支持多种类型文件读写</td>
+</tr>
+<tr>
+<td align="left">scipy.linalg</td>
+<td align="left">线性代数程序</td>
+</tr>
+<tr>
+<td align="left">scipy.ndimage</td>
+<td align="left">n维图像包</td>
+</tr>
+<tr>
+<td align="left">scipy.odr</td>
+<td align="left">正交距离回归</td>
+</tr>
+<tr>
+<td align="left">scipy.optimize</td>
+<td align="left">优化</td>
+</tr>
+<tr>
+<td align="left">==scipy.signal==</td>
+<td align="left">信号处理</td>
+</tr>
+<tr>
+<td align="left">scipy.sparse</td>
+<td align="left">稀疏矩阵</td>
+</tr>
+<tr>
+<td align="left">scipy.spatial</td>
+<td align="left">空间数据结构和算法</td>
+</tr>
+<tr>
+<td align="left">scipy.special</td>
+<td align="left">任何特殊数学函数</td>
+</tr>
+<tr>
+<td align="left">scipy.stats</td>
+<td align="left">统计</td>
+</tr>
+</tbody></table>
+<p><strong>numpy模块</strong></p>
+<p><a target="_blank" rel="noopener" href="https://numpy.org/doc/stable/reference/index.html#reference">https://numpy.org/doc/stable/reference/index.html#reference</a></p>
+<h3 id="数值积分"><a href="#数值积分" class="headerlink" title="数值积分"></a>数值积分</h3><p><strong>梯形规则</strong>：</p>
+<p>梯形积分只有1阶代数精度。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scipy.integrate.trapezoid(y, x=<span class="literal">None</span>, dx=<span class="number">1.0</span>, axis=-<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>辛普森规则</strong>：</p>
+<p>对于等间距的奇数个样本，如果函数是 3 阶或更小的多项式，则结果是精确的。如果样本不是等间距的，那么只有当函数是 2 阶或更小的多项式时，结果才是准确的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">scipy.integrate.simps(y, x=<span class="literal">None</span>, dx=<span class="number">1</span>, axis=-<span class="number">1</span>, even=<span class="string">&#x27;avg&#x27;</span>)</span><br><span class="line"><span class="comment"># even = &#123;‘avg’, ‘first’, ‘last’&#125;</span></span><br><span class="line"><span class="comment"># avg：平均first和last两个结果 默认参数</span></span><br><span class="line"><span class="comment"># first：对前N-2个区间使用Simpson规则，最后一个区间使用梯形规则</span></span><br><span class="line"><span class="comment"># last：对后N-2个区间使用Simpson规则，第一个区间使用梯形规则</span></span><br></pre></td></tr></table></figure>
+
+<p>测试</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scipy.integrate <span class="keyword">import</span> simps</span><br><span class="line"><span class="keyword">from</span> scipy.integrate <span class="keyword">import</span> trapz</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">x = np.arange(<span class="number">0</span>,<span class="number">4</span>)</span><br><span class="line">y = x ** <span class="number">2</span></span><br><span class="line"><span class="built_in">print</span>(x)</span><br><span class="line"><span class="built_in">print</span>(y)</span><br><span class="line">z= trapz(y,x)</span><br><span class="line"><span class="built_in">print</span>(z)</span><br><span class="line"></span><br><span class="line">z= simps(y,x,even=<span class="string">&#x27;last&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(z)</span><br><span class="line"></span><br><span class="line">plt.plot(x,y)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">0</span> <span class="number">1</span> <span class="number">2</span>]</span><br><span class="line">[<span class="number">0</span> <span class="number">1</span> <span class="number">4</span>]</span><br><span class="line"><span class="number">3.0</span></span><br><span class="line"><span class="number">2.6666666666666665</span></span><br></pre></td></tr></table></figure>
+
+<p>加速度计积分</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220308115529.png" alt="image-20220308115529357"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scipy.integrate <span class="keyword">import</span> simps</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">plt.rcParams[<span class="string">&#x27;font.sans-serif&#x27;</span>] = [<span class="string">&#x27;SimHei&#x27;</span>]  <span class="comment"># 用来正常显示中文标签</span></span><br><span class="line">plt.rcParams[<span class="string">&#x27;axes.unicode_minus&#x27;</span>] = <span class="literal">False</span>  <span class="comment"># 用来正常显示符号</span></span><br><span class="line"></span><br><span class="line">x = np.arange(<span class="number">0</span>, <span class="number">21</span>) * <span class="number">2</span> * np.pi / <span class="number">20</span></span><br><span class="line"><span class="comment"># y = np.sin(x) + np.random.rand(x.size) * 0.1</span></span><br><span class="line">y = np.sin(x)</span><br><span class="line"></span><br><span class="line">v = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(x)):</span><br><span class="line">    v.append(simps(y[:i + <span class="number">1</span>], x[:i + <span class="number">1</span>]))</span><br><span class="line"></span><br><span class="line">s = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(x)):</span><br><span class="line">    s.append(simps(v[:i + <span class="number">1</span>], x[:i + <span class="number">1</span>]))</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(y)</span><br><span class="line"><span class="built_in">print</span>(v)</span><br><span class="line"><span class="built_in">print</span>(s)</span><br><span class="line"></span><br><span class="line"><span class="comment"># matplotlib官方提供了五种不同的图形风格，分别是：bmh、ggplot、dark_background、fivethirtyeight 和 grayscale</span></span><br><span class="line">plt.style.use(<span class="string">&#x27;ggplot&#x27;</span>)</span><br><span class="line"><span class="comment"># plt.figure() # 创建一个画图窗口，可配置num图名、figsize画布大小、facecolor背景色、edgecolor边缘色</span></span><br><span class="line">plt.subplot(<span class="number">1</span>, <span class="number">3</span>, <span class="number">1</span>)  <span class="comment"># 将画布划分为1行3列</span></span><br><span class="line">plt.title(<span class="string">&quot;加速度曲线&quot;</span>)  <span class="comment"># 设置图表的标题</span></span><br><span class="line">plt.ylabel(<span class="string">&#x27;a(m/s^2)&#x27;</span>)  <span class="comment"># 设置坐标轴的标签</span></span><br><span class="line">plt.xlabel(<span class="string">&#x27;t(s)&#x27;</span>)</span><br><span class="line">plt.xlim(<span class="number">0</span>, <span class="number">7</span>)  <span class="comment"># 设置坐标轴的刻度范围</span></span><br><span class="line">plt.ylim(-<span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line"><span class="comment"># plt.xticks(np.linspace(0,10,5),rotation=45) # 设置坐标轴刻度信息，rotation表示旋转</span></span><br><span class="line"><span class="comment"># plt.legend() # 设置显示图例，loc参数设置图例显示的位置</span></span><br><span class="line"><span class="comment"># 移动坐标轴，spines为脊梁，即4个边框</span></span><br><span class="line">ax = plt.gca()  <span class="comment"># get current axis 得到当前的坐标轴</span></span><br><span class="line">ax.spines[<span class="string">&#x27;right&#x27;</span>].set_color(<span class="string">&#x27;none&#x27;</span>)  <span class="comment"># 设置右‘脊梁’消失掉</span></span><br><span class="line">ax.spines[<span class="string">&#x27;top&#x27;</span>].set_color(<span class="string">&#x27;none&#x27;</span>)  <span class="comment"># 设置上‘脊梁’消失掉</span></span><br><span class="line">ax.xaxis.set_ticks_position(<span class="string">&#x27;bottom&#x27;</span>)  <span class="comment"># 底部‘脊梁’设置为X轴</span></span><br><span class="line">ax.yaxis.set_ticks_position(<span class="string">&#x27;left&#x27;</span>)  <span class="comment"># 左部‘脊梁’设置为Y轴</span></span><br><span class="line">ax.spines[<span class="string">&#x27;bottom&#x27;</span>].set_position((<span class="string">&#x27;data&#x27;</span>, <span class="number">0</span>))  <span class="comment"># 底部‘脊梁’移动位置，通过值来选择，x轴值为o的位置</span></span><br><span class="line">ax.spines[<span class="string">&#x27;left&#x27;</span>].set_position((<span class="string">&#x27;data&#x27;</span>, <span class="number">0</span>))  <span class="comment"># 左部‘脊梁’移动位置，y轴值为0的位置</span></span><br><span class="line"><span class="comment"># 绘制折线图，参数color表示颜色，label图例，linestyle曲线风格，linewidth曲线宽度，marker标记点样式，markersize标记点大小</span></span><br><span class="line">plt.plot(x, y, color=<span class="string">&#x27;blue&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(y.size):</span><br><span class="line">    plt.plot([x[i], x[i]], [y[i], <span class="number">0</span>], color=<span class="string">&#x27;#666666&#x27;</span>, linestyle=<span class="string">&#x27;--&#x27;</span>)</span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>)</span><br><span class="line">plt.title(<span class="string">&quot;速度曲线&quot;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;v(m/s)&#x27;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;t(s)&#x27;</span>)</span><br><span class="line">plt.xlim(<span class="number">0</span>, <span class="number">7</span>)  <span class="comment"># 设置坐标轴的刻度范围</span></span><br><span class="line">plt.ylim(<span class="number">0</span>, <span class="number">2</span>)</span><br><span class="line">ax = plt.gca()  <span class="comment"># get current axis 得到当前的坐标轴</span></span><br><span class="line">ax.spines[<span class="string">&#x27;right&#x27;</span>].set_color(<span class="string">&#x27;none&#x27;</span>)  <span class="comment"># 设置右‘脊梁’消失掉</span></span><br><span class="line">ax.spines[<span class="string">&#x27;top&#x27;</span>].set_color(<span class="string">&#x27;none&#x27;</span>)  <span class="comment"># 设置上‘脊梁’消失掉</span></span><br><span class="line">plt.plot(x, v, color=<span class="string">&#x27;red&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(y.size):</span><br><span class="line">    plt.plot([x[i], x[i]], [v[i], <span class="number">0</span>], color=<span class="string">&#x27;#666666&#x27;</span>, linestyle=<span class="string">&#x27;--&#x27;</span>)</span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">1</span>, <span class="number">3</span>, <span class="number">3</span>)</span><br><span class="line">plt.title(<span class="string">&quot;位移曲线&quot;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;s(m)&#x27;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;t(s)&#x27;</span>)</span><br><span class="line">plt.xlim(<span class="number">0</span>, <span class="number">7</span>)  <span class="comment"># 设置坐标轴的刻度范围</span></span><br><span class="line">plt.ylim(<span class="number">0</span>, <span class="number">7</span>)</span><br><span class="line">ax = plt.gca()  <span class="comment"># get current axis 得到当前的坐标轴</span></span><br><span class="line">ax.spines[<span class="string">&#x27;right&#x27;</span>].set_color(<span class="string">&#x27;none&#x27;</span>)  <span class="comment"># 设置右‘脊梁’消失掉</span></span><br><span class="line">ax.spines[<span class="string">&#x27;top&#x27;</span>].set_color(<span class="string">&#x27;none&#x27;</span>)  <span class="comment"># 设置上‘脊梁’消失掉</span></span><br><span class="line">plt.plot(x, s, color=<span class="string">&#x27;green&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(y.size):</span><br><span class="line">    plt.plot([x[i], x[i]], [s[i], <span class="number">0</span>], color=<span class="string">&#x27;#666666&#x27;</span>, linestyle=<span class="string">&#x27;--&#x27;</span>)</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<h3 id="傅里叶变换"><a href="#傅里叶变换" class="headerlink" title="傅里叶变换"></a>傅里叶变换</h3><p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/l494926429/article/details/51818012">https://blog.csdn.net/l494926429/article/details/51818012</a></p>
+<p><strong>正弦是一种自然摆动，象征着平滑</strong></p>
+<p>正弦运动是变速的：开始快，慢慢减速直至停止，然后又开始加速。如同弹簧的弹跳，钟摆的摆动，琴弦的振动。</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220321111100.gif" alt="v2-43f1a1684b302373b2c42a7fcb23198f_b"></p>
+<p>正弦波可看做是一个圆周运动在一条直线上的投影。</p>
+<p>x(t) = A sin(2 π f t + φ) = A sin(ω t  + φ)        </p>
+<ul>
+<li> A——振幅</li>
+<li> (ωt+φ)——相位</li>
+<li> φ——初相</li>
+<li> ω——角速度，在单位时间内所走的弧度，ω=2π/T=2 π f</li>
+<li> T——周期</li>
+<li> f——频率，单位时间内完成周期性变化的次数，f=1/T</li>
+<li> λ——波长，一个变化周期内传播的距离叫做波长，λ=vT，v指波速，电磁波传播速度与光速相同，为10^8米每秒</li>
+</ul>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220321110304.png" alt="bcb52578f6419c3350bb31edccfc3838"></p>
+<p>傅里叶变换是一种信号分析方法，可以把时域信号转为频域信号，让我们对信号的构成和特点进行深入的、定量的研究。把信号通过频谱的方式(包括幅值谱、相位谱和功率谱)进行准确的、定量的描述。</p>
+<p>傅里叶变换的核心在于任何信号都可以表示成不同振幅，不同相位正弦信号的叠加。</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220309211700.jpeg" alt="4bed2e738bd4b31c1d60e341d143c7799f2ff80c"></p>
+<p>图中最前面黑色的线就是所有正弦波叠加而成的总和，也就是越来越接近矩形波的那个图形。而后面依不同颜色排列而成的正弦波就是组合为矩形波的各个分量。这些正弦波按照频率从低到高从前向后排列开来，而每一个波的振幅都是不同的。每两个正弦波之间都还有一条直线，那并不是分割线，而是振幅为 0 的正弦波！也就是说，为了组成特殊的曲线，有些正弦波成分是不需要的。</p>
+<p>频域图像从侧面看。在频谱中，偶数项的振幅都是0，也就对应了图中的彩色直线。振幅为 0 的正弦波。</p>
+<p>频谱并没有包含时域中全部的信息。因为频谱只代表每一个对应的正弦波的振幅是多少，而没有提到相位。基础的正弦波A.sin(wt+θ)中，振幅，频率，相位缺一不可，不同相位决定了波的位置，所以对于频域分析，仅仅有频谱（振幅谱）是不够的，我们还需要一个相位谱。</p>
+<p>相位谱图像从上面看。</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220309213034.png" alt="image-20220309213034209"></p>
+<p>图中红点是距离频率轴最近的波峰，紫色为投影下的点。但是这些紫色的点是投影在时间轴上的，只标注了波峰距离频率轴的时间差，并不是相位。将时间差除周期再乘2Pi，就得到了相位差。</p>
+<p>Scipy包含FFT实现，更底层和高效。</p>
+<p>Numpy也有一个FFT(numpy.fft)实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">fft.fft(a, n=<span class="literal">None</span>, axis=- <span class="number">1</span>, norm=<span class="literal">None</span>)</span><br><span class="line"><span class="comment"># norm = &#123;“backward”, “ortho”, “forward”&#125;</span></span><br><span class="line"><span class="comment"># 指示前向/后向变换对的哪个方向被缩放以及使用什么归一化因子</span></span><br><span class="line"><span class="comment"># 默认backward</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fft.ifft(a, n=<span class="literal">None</span>, axis=- <span class="number">1</span>, norm=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+<p>测试</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> numpy.fft <span class="keyword">as</span> fft</span><br><span class="line"></span><br><span class="line">plt.rcParams[<span class="string">&#x27;font.sans-serif&#x27;</span>] = [<span class="string">&#x27;SimHei&#x27;</span>]  <span class="comment"># 用来正常显示中文标签</span></span><br><span class="line">plt.rcParams[<span class="string">&#x27;axes.unicode_minus&#x27;</span>] = <span class="literal">False</span>  <span class="comment"># 用来正常显示符号</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 采样点选择1000个，因为设置的信号频率分量最高为100赫兹，根据采样定理知采样频率要大于信号频率2倍</span></span><br><span class="line">t = np.linspace(<span class="number">0</span>, <span class="number">1</span>, <span class="number">1000</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 直流分量是0.2，以及两个余弦函数的叠加，余弦函数的幅值分别为0.7和0.2，频率分别为50和100，初相位分别为20度和70度</span></span><br><span class="line">S = <span class="number">0.2</span> + <span class="number">0.7</span> * np.cos(<span class="number">2</span> * np.pi * <span class="number">50</span> * t + <span class="number">20</span> / <span class="number">180</span> * np.pi) + <span class="number">0.2</span> * np.cos(<span class="number">2</span> * np.pi * <span class="number">100</span> * t + <span class="number">70</span> / <span class="number">180</span> * np.pi)</span><br><span class="line"></span><br><span class="line">complex_array = fft.fft(S)  <span class="comment"># 傅里叶变换后的复数数组,变换之后的结果数据长度和原始采样信号是一样的</span></span><br><span class="line"><span class="built_in">print</span>(complex_array.shape)</span><br><span class="line"><span class="built_in">print</span>(complex_array.dtype)</span><br><span class="line"><span class="built_in">print</span>(complex_array[<span class="number">1</span>])</span><br><span class="line"><span class="comment"># 复数的模(绝对值)代表的是振幅，复数的辐角代表初相位</span></span><br><span class="line">pows = np.<span class="built_in">abs</span>(complex_array)  <span class="comment"># 振幅</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#################################</span></span><br><span class="line"><span class="comment"># 绘制数据采样图</span></span><br><span class="line">plt.subplot(<span class="number">3</span>,<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line">plt.grid(linestyle=<span class="string">&#x27;:&#x27;</span>) <span class="comment"># 绘制网格线</span></span><br><span class="line">plt.plot(<span class="number">1000</span> * t[:<span class="number">100</span>], S[:<span class="number">100</span>], label=<span class="string">&#x27;S&#x27;</span>)  <span class="comment"># y是1000个相加后的正弦序列</span></span><br><span class="line">plt.xlabel(<span class="string">&quot;t（毫秒）&quot;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&quot;S(t)幅值&quot;</span>)</span><br><span class="line">plt.title(<span class="string">&quot;叠加信号图&quot;</span>)</span><br><span class="line">plt.legend()</span><br><span class="line"></span><br><span class="line"><span class="comment">###################################</span></span><br><span class="line"><span class="comment"># 绘制频谱图</span></span><br><span class="line"><span class="comment"># np.fft.fftfreq(采样数量, 采样周期)　　通过采样数与采样周期得到时域序列经过傅里叶变换后的频率序列</span></span><br><span class="line">freqs = fft.fftfreq(t.size, <span class="number">1</span>/<span class="number">1000</span>)</span><br><span class="line"><span class="built_in">print</span>(freqs.shape)</span><br><span class="line"><span class="comment"># 复数的模为信号的振幅（能量大小）</span></span><br><span class="line">plt.subplot(<span class="number">3</span>,<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;FFT变换,频谱图&#x27;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;Frequency 频率&#x27;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;Power 振幅&#x27;</span>)</span><br><span class="line">plt.tick_params(labelsize=<span class="number">10</span>)  <span class="comment"># 刻度线样式</span></span><br><span class="line">plt.grid(linestyle=<span class="string">&#x27;:&#x27;</span>)</span><br><span class="line">plt.plot(freqs[freqs &gt;= <span class="number">0</span>], pows[freqs &gt;= <span class="number">0</span>], c=<span class="string">&#x27;orangered&#x27;</span>, label=<span class="string">&#x27;Frequency&#x27;</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.tight_layout()</span><br><span class="line"><span class="comment"># 频谱图中，第一个峰值（频率位置）的模是常数项A1的N倍，N为采样点，本程序显示为0.2*1000</span></span><br><span class="line"><span class="comment"># 第二个峰值（频率位置）的模是A2的N/2倍，N为采样点，0.7*500</span></span><br><span class="line"><span class="comment"># 第三个峰值（频率位置）的模是A3的N/2倍，N为采样点，0.2*500</span></span><br><span class="line"><span class="comment"># 第四个峰值（频率位置）的模是A4的N/2倍，N为采样点...</span></span><br><span class="line"><span class="comment"># 一般是不显示这个常数项的，取 freqs &gt; 0即可</span></span><br><span class="line"><span class="comment"># 频谱图中频率最低的元素称为基频，具有最高幅度的称为主频</span></span><br><span class="line"><span class="comment"># 频谱图中只显示一半采样频率的数据，就是因为奎纳斯定理采样频率大于信号频率的2倍</span></span><br><span class="line"></span><br><span class="line"><span class="comment">###################################</span></span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">3</span>,<span class="number">1</span>,<span class="number">3</span>)</span><br><span class="line">S_ifft = fft.ifft(complex_array) <span class="comment"># 傅里叶逆变换</span></span><br><span class="line"></span><br><span class="line">plt.plot(<span class="number">1000</span> * t[:<span class="number">100</span>], S_ifft[:<span class="number">100</span>], label=<span class="string">&#x27;S_ifft&#x27;</span>, color=<span class="string">&#x27;orangered&#x27;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&quot;t（毫秒）&quot;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&quot;S_ifft(t)幅值&quot;</span>)</span><br><span class="line">plt.title(<span class="string">&quot;ifft变换图&quot;</span>)</span><br><span class="line">plt.grid(linestyle=<span class="string">&#x27;:&#x27;</span>)</span><br><span class="line">plt.legend()</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>效果</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220309214808.png" alt="Figue_1"></p>
+<h3 id="数据滤波"><a href="#数据滤波" class="headerlink" title="数据滤波"></a>数据滤波</h3><p>数据滤波的作用：</p>
+<p>1、将有用的信号与噪声分离，提高信号的抗干扰性及信噪比；</p>
+<p>2、滤掉不感兴趣的频率成分，提高分析精度；</p>
+<p>3、从复杂频率成分中分离出单一的频率分量。</p>
+<h4 id="频域滤波"><a href="#频域滤波" class="headerlink" title="频域滤波"></a>频域滤波</h4><p>通过时域转换为频域，在频域信号中去除相应频域信号，最后在逆转换还原为时域型号。</p>
+<p>使用傅里叶变换将时域信号转为频域信号可以很容易地对数据进行滤波处理。</p>
+<p>这里以一个音频信号处理为例，将包含噪声的音频信号经过傅里叶变换，只保留最大频率信号，在经过逆变换还原。可以发现音频信号变得平滑，噪声也消失了。</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220309215948.png" alt="Filter"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> numpy.fft <span class="keyword">as</span> nf</span><br><span class="line"><span class="keyword">import</span> scipy.io.wavfile <span class="keyword">as</span> wf  <span class="comment"># wav数据读取</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取包含噪音的音频文件</span></span><br><span class="line">sample_rate, noised_sigs = wf.read(<span class="string">&#x27;noised.wav&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(sample_rate)  <span class="comment"># sample_rate：采样率44100</span></span><br><span class="line"><span class="built_in">print</span>(noised_sigs.shape)  <span class="comment"># noised_sigs:存储音频中每个采样点的采样位移(220500,)</span></span><br><span class="line">times = np.arange(noised_sigs.size) / sample_rate</span><br><span class="line"></span><br><span class="line"><span class="comment"># 绘制音频信号图像</span></span><br><span class="line">plt.figure(<span class="string">&#x27;Filter&#x27;</span>)</span><br><span class="line">plt.subplot(<span class="number">221</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;Time Domain&#x27;</span>, fontsize=<span class="number">16</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;Signal&#x27;</span>, fontsize=<span class="number">12</span>)</span><br><span class="line">plt.tick_params(labelsize=<span class="number">10</span>)</span><br><span class="line">plt.grid(linestyle=<span class="string">&#x27;:&#x27;</span>)</span><br><span class="line">plt.plot(times[:<span class="number">178</span>], noised_sigs[:<span class="number">178</span>], c=<span class="string">&#x27;orangered&#x27;</span>, label=<span class="string">&#x27;Noised&#x27;</span>)</span><br><span class="line">plt.legend()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 傅里叶变换后，绘制频域图像</span></span><br><span class="line">freqs = nf.fftfreq(times.size, times[<span class="number">1</span>] - times[<span class="number">0</span>])</span><br><span class="line">complex_array = nf.fft(noised_sigs)</span><br><span class="line">pows = np.<span class="built_in">abs</span>(complex_array)</span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">222</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;Frequency Domain&#x27;</span>, fontsize=<span class="number">16</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;Power&#x27;</span>, fontsize=<span class="number">12</span>)</span><br><span class="line">plt.tick_params(labelsize=<span class="number">10</span>)</span><br><span class="line">plt.grid(linestyle=<span class="string">&#x27;:&#x27;</span>)</span><br><span class="line"><span class="comment"># 指数增长坐标画图</span></span><br><span class="line">plt.semilogy(freqs[freqs &gt; <span class="number">0</span>], pows[freqs &gt; <span class="number">0</span>], c=<span class="string">&#x27;limegreen&#x27;</span>, label=<span class="string">&#x27;Noised&#x27;</span>)</span><br><span class="line">plt.legend()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 寻找能量最大的频率值</span></span><br><span class="line">fund_freq = freqs[pows.argmax()]</span><br><span class="line"><span class="comment"># where函数寻找那些需要抹掉的复数的索引</span></span><br><span class="line">noised_indices = np.where(freqs != fund_freq)</span><br><span class="line"><span class="comment"># 复制一个复数数组的副本，避免污染原始数据</span></span><br><span class="line">filter_complex_array = complex_array.copy()</span><br><span class="line">filter_complex_array[noised_indices] = <span class="number">0</span></span><br><span class="line">filter_pows = np.<span class="built_in">abs</span>(filter_complex_array)</span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">224</span>)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;Frequency&#x27;</span>, fontsize=<span class="number">12</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;Power&#x27;</span>, fontsize=<span class="number">12</span>)</span><br><span class="line">plt.tick_params(labelsize=<span class="number">10</span>)</span><br><span class="line">plt.grid(linestyle=<span class="string">&#x27;:&#x27;</span>)</span><br><span class="line">plt.plot(freqs[freqs &gt;= <span class="number">0</span>], filter_pows[freqs &gt;= <span class="number">0</span>], c=<span class="string">&#x27;dodgerblue&#x27;</span>, label=<span class="string">&#x27;Filter&#x27;</span>)</span><br><span class="line">plt.legend()</span><br><span class="line"></span><br><span class="line">filter_sigs = nf.ifft(filter_complex_array).real</span><br><span class="line">plt.subplot(<span class="number">223</span>)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;Time&#x27;</span>, fontsize=<span class="number">12</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;Signal&#x27;</span>, fontsize=<span class="number">12</span>)</span><br><span class="line">plt.tick_params(labelsize=<span class="number">10</span>)</span><br><span class="line">plt.grid(linestyle=<span class="string">&#x27;:&#x27;</span>)</span><br><span class="line">plt.plot(times[:<span class="number">178</span>], filter_sigs[:<span class="number">178</span>], c=<span class="string">&#x27;hotpink&#x27;</span>, label=<span class="string">&#x27;Filter&#x27;</span>)  <span class="comment"># 滤波后的信号周期为0.001s,频率为1000Hz</span></span><br><span class="line">plt.legend()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 音乐频率范围约为20Hz---20KHz，人的声音频率范围约为300Hz---3.4KHz。但人能听到的最高频率是15KHz</span></span><br><span class="line"><span class="comment"># 人声:男:低音82~392Hz，基准音区64~523Hz</span></span><br><span class="line"><span class="comment"># 男中音123~493Hz，男高音164~698Hz</span></span><br><span class="line"><span class="comment"># 女:低音82~392Hz，基准音区160~1200Hz</span></span><br><span class="line"><span class="comment"># 女中音123~493Hz，女高音220~1.1KHz</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成音频文件</span></span><br><span class="line">wf.write(<span class="string">&#x27;filter.wav&#x27;</span>, sample_rate, filter_sigs)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<h4 id="时域滤波"><a href="#时域滤波" class="headerlink" title="时域滤波"></a>时域滤波</h4><p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/iceberg7012/article/details/109901315?utm_medium=distribute.pc_aggpage_search_result.none-task-blog-2~aggregatepage~first_rank_ecpm_v1~rank_v31_ecpm-3-109901315.pc_agg_new_rank&utm_term=%E5%B7%B4%E7%89%B9%E6%B2%83%E6%96%AF%E6%BB%A4%E6%B3%A2%E5%99%A8%E6%98%AFfir+%E8%BF%98%E6%98%AFiir&spm=1000.2123.3001.4430">滤波器（FIR与IIR）</a></p>
+<p>滤波器通过减小或放大某些频率来改变时间信号的频率成分。</p>
+<p>数据滤波的时域方法是对信号离散数据进行差分方程数学运算来达到滤波的目的。经典数字滤波器实现方法主要有两种。一种是IIR数字滤波器，称为无限长冲激响应滤波器；另一种是FIR滤波器，称为有限长冲激响应滤波器。</p>
+<p>其中脉冲响应”是指滤波器在时域中的外观。滤波器通常具有较宽的频率响应，其对应于时域中的短持续时间脉冲。</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220311103739.png" alt="image-20220311103739762"></p>
+<p>无限长冲激响应IIR数字滤波器（Infinite Impuloe Response Digital Filter）的特征是具有无限持续时间的冲激响应，由于这种滤波器一般需要用递归模型来实现，因而又称为递归滤波器。因为IIR滤波器不仅用了输入有限项计算，而且把滤波器以前输出的有限项重新输入再计算，这在工程上称为反馈。</p>
+<p>IIR数字滤波器的设计通常借助于模拟滤波器原型，再将模拟滤波器转换成数字滤波器。模拟滤波器的设计较为成熟，既有完整的设计公式，还有较为完整的可供查询的图表，因此，充分利用这些已有的资源无疑会给数字滤波器的设计带来很多便利。</p>
+<p>常用的模拟低通滤波器的原型产生函数有==巴特沃斯滤波器原型、切比雪夫1型和2型滤波器原型、椭圆滤波器原型、贝塞尔（Bessel）滤波器原型==等。</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220311102626.webp" alt="77094b36acaf2eddb4e523878c1001e939019343"></p>
+<p>有限长冲激响应FIR数字滤波器（Finite Impuloe Response Digital Filter）的特征是冲激响应只能延续一定时间，在工程实际应用中主要采用非递归的算法来实现。</p>
+<p>优缺点对比：</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220311104110.png" alt="image-20220311104110602"></p>
+<ul>
+<li><strong>理想滤波器</strong></li>
+</ul>
+<p>使通带内信号的幅值和相位都不失真，阻喧内的频率成分都衰减为零的滤波器，其通带和阻带之间有明显的分界线。</p>
+<p>如理想低通滤波器的频率响应函数为：</p>
+<p><img src="http://img.mp.itc.cn/upload/20170406/65863ae5e55748c2b0c1ecba52e60983_th.jpeg" alt="img"></p>
+<ul>
+<li><strong>实际滤波器</strong></li>
+</ul>
+<p><img src="http://img.mp.itc.cn/upload/20170406/6b5528e269ad4a65978a233fb0c50a86.jpeg" alt="img"></p>
+<p>理想滤波器是不存在的，在实际滤波器的幅频特性图中，通带和阻带之间应没有严格的界限。在通带和阻带之间存在一个过渡带。在过渡带内的频率成分不会被完全抑制，只会受到不同程度的衰减。</p>
+<p>当然，希望过渡带越窄越好，也就是希望对通带外的频率成分衰减得越快、越多越好。因此，在设计实际滤波器时，总是通过各种方法使其尽量逼近理想滤波器。</p>
+<p><img src="http://img.mp.itc.cn/upload/20170406/a65bba633ec6442b92c81b7d03b7503b.jpeg" alt="img"></p>
+<p>如上理想带通和实际带通滤波器的幅频特性图可见，理想滤波器的特性只需用截止频率描述，而实际滤波器的特性曲线无明显的转折点，两截止频率之间的幅频特性也非常数，故需用更多参数来描述。</p>
+<p>python中可以用lfilter与filtfilt进行滤波。</p>
+<p>filtfilt是零相位滤波，在滤波时不会移位信号。由于在所有频率下相位均为零，因此它也是线性相位。及时过滤需要您预测未来，因此不能在“在线”实际应用中使用，仅用于信号记录的离线处理。<br>lfilter是一种因果时间过滤，类似于现实生活中的电子过滤器。它不能是零相位。它可以是线性相位（对称FIR），但通常不是。通常它会在不同的频率上增加不同的延迟量。</p>
+<p><a target="_blank" rel="noopener" href="http://www.zzvips.com/article/175035.html">==利用Scipy.signal.filtfilt() 实现信号滤波==</a></p>
+<p>滤波函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scipy.signal.filtfilt(b, a, x, axis=-<span class="number">1</span>, padtype=<span class="string">&#x27;odd&#x27;</span>, padlen=none, method=<span class="string">&#x27;pad&#x27;</span>, irlen=none)</span><br></pre></td></tr></table></figure>
+
+<p>输入参数：</p>
+<p>b: 滤波器的分子系数向量</p>
+<p>a: 滤波器的分母系数向量</p>
+<p>x: 要过滤的数据数组。（array型）</p>
+<p>这里选用巴特沃斯滤波器（Butterworth filter）滤波器，构造函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scipy.signal.butter(n, wn, btype=<span class="string">&#x27;low&#x27;</span>, analog=false, output=<span class="string">&#x27;ba&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输入参数：</p>
+<p>n: 滤波器的阶数</p>
+<p>wn：归一化截止频率。计算公式wn=2*截止频率/采样频率。（注意：根据采样定理，采样频率要大于两倍的信号本身最大的频率，才能还原信号。截止频率一定小于信号本身最大的频率，所以wn一定在0和1之间）。当构造带通滤波器或者带阻滤波器时，wn为长度为2的列表。</p>
+<p>btype : 滤波器类型{‘lowpass’, ‘highpass’, ‘bandpass’, ‘bandstop’},</p>
+<p>output : 输出类型{‘ba’, ‘zpk’, ‘sos’},</p>
+<p>输出参数：</p>
+<p>b，a: iir滤波器的分子（b）和分母（a）多项式系数向量。output=’ba’</p>
+<p>z,p,k: iir滤波器传递函数的零点、极点和系统增益. output= ‘zpk’</p>
+<p>sos: iir滤波器的二阶截面表示。output= ‘sos’</p>
+<p>对于如图所示的振动数据：</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220310111805.png" alt="Figure1"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> numpy.fft <span class="keyword">as</span> fft</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> obspy <span class="keyword">import</span> read  <span class="comment"># 针对地震领域开发的python库</span></span><br><span class="line"></span><br><span class="line">plt.rcParams[<span class="string">&#x27;font.sans-serif&#x27;</span>] = [<span class="string">&#x27;SimHei&#x27;</span>]  <span class="comment"># 用来正常显示中文标签</span></span><br><span class="line">plt.rcParams[<span class="string">&#x27;axes.unicode_minus&#x27;</span>] = <span class="literal">False</span>  <span class="comment"># 用来正常显示符号</span></span><br><span class="line"></span><br><span class="line"><span class="comment">###########################</span></span><br><span class="line">tr = read()[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 原始信号 s1 及对应的时间 t</span></span><br><span class="line">s1 = tr.data</span><br><span class="line"><span class="built_in">print</span>(s1.shape)</span><br><span class="line">t = np.arange(<span class="built_in">len</span>(s1)) * tr.stats.delta  <span class="comment"># tr.stats地震元数据，delta采样间隔,0.01s</span></span><br><span class="line"></span><br><span class="line"><span class="comment">############################</span></span><br><span class="line"><span class="comment"># 傅里叶变换</span></span><br><span class="line">complex_array = fft.fft(s1)</span><br><span class="line">pows = np.<span class="built_in">abs</span>(complex_array)  <span class="comment"># 振幅</span></span><br><span class="line">freqs = fft.fftfreq(t.size, tr.stats.delta) <span class="comment"># 采样数量, 采样周期</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#############################</span></span><br><span class="line">plt.subplot(<span class="number">2</span>,<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line">plt.plot(t, s1, label=<span class="string">&#x27;Original signal&#x27;</span>)</span><br><span class="line">plt.legend()</span><br><span class="line"></span><br><span class="line"><span class="comment">#############################</span></span><br><span class="line">plt.subplot(<span class="number">2</span>,<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">plt.plot(freqs[freqs &gt;= <span class="number">0</span>], pows[freqs &gt;= <span class="number">0</span>], c=<span class="string">&#x27;orangered&#x27;</span>,label=<span class="string">&#x27;Frequency&#x27;</span>)</span><br><span class="line">plt.legend()</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>对其进行滤波得到如图所示的结果：</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220310112303.png" alt="Figure1"></p>
+<p>根据信号的频谱图可以知道，信号的主频率范围在低频部分。所以低通滤波（&lt;2Hz）效果较好，高通滤波（&gt;0.1Hz）就保留了大部分的高频噪声。带通滤波（&gt;0.1Hz，&lt;2Hz）也有不错的效果，带阻滤波（&lt;0.1Hz， &gt;2Hz）完全偏离原有数据波形。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> obspy <span class="keyword">import</span> read  <span class="comment"># 针对地震领域开发的python库</span></span><br><span class="line"><span class="keyword">from</span> scipy <span class="keyword">import</span> signal</span><br><span class="line"></span><br><span class="line">tr = read()[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 原始信号 s1 及对应的时间 t</span></span><br><span class="line">s1 = tr.data</span><br><span class="line"><span class="built_in">print</span>(s1.shape)</span><br><span class="line">t = np.arange(<span class="built_in">len</span>(s1)) * tr.stats.delta  <span class="comment"># tr.stats地震元数据，delta采样间隔,0.01s</span></span><br><span class="line"></span><br><span class="line">fs = <span class="number">1</span> / tr.stats.delta  <span class="comment"># 采样率 (赫兹)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 4阶低通滤波</span></span><br><span class="line">fc = <span class="number">2</span>  <span class="comment"># 截止频率 （赫兹）</span></span><br><span class="line">b, a = signal.butter(<span class="number">4</span>, <span class="number">2.0</span> * fc / fs, btype=<span class="string">&#x27;lowpass&#x27;</span>)</span><br><span class="line">s2 = signal.filtfilt(b, a, s1)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4阶高通滤波</span></span><br><span class="line">fc = <span class="number">0.1</span>  <span class="comment"># 截止频率 （赫兹）</span></span><br><span class="line">b, a = signal.butter(<span class="number">4</span>, <span class="number">2.0</span> * fc / fs, btype=<span class="string">&#x27;highpass&#x27;</span>)</span><br><span class="line">s3 = signal.filtfilt(b, a, s1)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4阶带通滤波</span></span><br><span class="line">f1 = <span class="number">0.1</span></span><br><span class="line">f2 = <span class="number">2</span>  <span class="comment"># 通带的两个截止频率 （赫兹）</span></span><br><span class="line">b, a = signal.butter(<span class="number">4</span>, [<span class="number">2.0</span> * f1 / fs, <span class="number">2.0</span> * f2 / fs], btype=<span class="string">&#x27;bandpass&#x27;</span>)</span><br><span class="line">s4 = signal.filtfilt(b, a, s1)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4阶带阻滤波</span></span><br><span class="line">f1 = <span class="number">0.1</span></span><br><span class="line">f2 = <span class="number">2</span>  <span class="comment"># 阻带的两个截止频率</span></span><br><span class="line">b, a = signal.butter(<span class="number">4</span>, [<span class="number">2.0</span> * f1 / fs, <span class="number">2.0</span> * f2 / fs], btype=<span class="string">&#x27;bandstop&#x27;</span>)</span><br><span class="line">s5 = signal.filtfilt(b, a, s1)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 画图对比</span></span><br><span class="line">l = <span class="number">4</span></span><br><span class="line">plt.figure(figsize=(<span class="number">15</span>, <span class="number">20</span>))</span><br><span class="line"></span><br><span class="line">plt.subplot(l, <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">plt.plot(t, s1, label=<span class="string">&#x27;Original signal&#x27;</span>)</span><br><span class="line">plt.plot(t, s2, label=<span class="string">&#x27;Lowpass filtered&#x27;</span>)</span><br><span class="line">plt.legend(fontsize=<span class="number">15</span>)</span><br><span class="line"></span><br><span class="line">plt.subplot(l, <span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">plt.plot(t, s1, label=<span class="string">&#x27;Original signal&#x27;</span>)</span><br><span class="line">plt.plot(t, s3, label=<span class="string">&#x27;Highpass filtered&#x27;</span>)</span><br><span class="line">plt.legend(fontsize=<span class="number">15</span>)</span><br><span class="line"></span><br><span class="line">plt.subplot(l, <span class="number">1</span>, <span class="number">3</span>)</span><br><span class="line">plt.plot(t, s1, label=<span class="string">&#x27;Original signal&#x27;</span>)</span><br><span class="line">plt.plot(t, s4, label=<span class="string">&#x27;Bandpass filtered&#x27;</span>)</span><br><span class="line">plt.legend(fontsize=<span class="number">15</span>)</span><br><span class="line"></span><br><span class="line">plt.subplot(l, <span class="number">1</span>, <span class="number">4</span>)</span><br><span class="line">plt.plot(t, s1, label=<span class="string">&#x27;Original signal&#x27;</span>)</span><br><span class="line">plt.plot(t, s5, label=<span class="string">&#x27;Bandstop filtered&#x27;</span>)</span><br><span class="line">plt.legend(fontsize=<span class="number">15</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<h4 id="卡尔曼滤波"><a href="#卡尔曼滤波" class="headerlink" title="卡尔曼滤波"></a>卡尔曼滤波</h4><p>参考视频：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av203511504?from=search&amp;seid=2691846854868972756&amp;spm_id_from=333.337.0.0">https://www.bilibili.com/video/av203511504?from=search&amp;seid=2691846854868972756&amp;spm_id_from=333.337.0.0</a></p>
+<p>==滤波就是将信号中的噪声滤除，使信号更趋于真实值==。</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20211214150128.png" alt="image-20211214150128628"></p>
+<p>对于上述测距传感器，测量值在一定范围波动，通过平滑滤波可以得到紫色的曲线，明显更接近真实值。</p>
+<p>卡尔曼滤波（Kalman filtering）是一种利用线性系统状态方程，通过系统输入输出观测数据，对系统状态进行最优估计的算法。由于观测数据中包括系统中的噪声和干扰的影响，所以最优估计也可看作是滤波过程。</p>
+<p>适用系统：<strong>线性高斯</strong>系统</p>
+<ul>
+<li><p>线性</p>
+<ul>
+<li>叠加性</li>
+<li>齐次性</li>
+</ul>
+</li>
+<li><p>高斯</p>
+<p>噪声满足正态分布</p>
+</li>
+</ul>
+<p>假设你有两个传感器，测的是同一个信号。可是它们每次的读数都不太一样，怎么办？ </p>
+<p>取平均。 </p>
+<p>再假设你知道其中贵的那个传感器应该准一些，便宜的那个应该差一些。那有比取平均更好的办法吗？ </p>
+<p>加权平均。 </p>
+<p>怎么加权？假设两个传感器的误差都符合正态分布，假设你知道这两个正态分布的方差，用这两个方差值，你可以得到一个“最优”的权重。 </p>
+<p>接下来，重点来了：假设你只有一个传感器，但是你还有一个数学模型。模型可以帮你算出一个值，但也不是那么准。怎么办？ </p>
+<p>==把模型算出来的值，和传感器测出的值，（就像两个传感器那样），取加权平均==。 </p>
+<p>OK，最后一点说明：你的模型其实只是一个步长的，也就是说，知道x(k)，我可以求x(k+1)。问题是x(k)是多少呢？答案：x(k)就是你上一步卡尔曼滤波得到的、所谓加权平均之后的那个、对x在k时刻的最佳估计值。 </p>
+<p>于是迭代也有了。 </p>
+<p>这就是卡尔曼滤波。</p>
+<p>==kalman滤波用在当测量值与模型预测值均不准确的情况下，用来计算预测真值的一种滤波方法==。</p>
+<p>其本质上是一个==数据融合算法==，将具有同样测量目的、来自不同传感器、(可能) 具有不同单位 (unit) 的数据融合在一起，得到一个更精确的目的测量值。</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220310100249.png" alt="image-20220310100249254"></p>
+<p>过程噪声Wk属于正态分布N（0；Qk）</p>
+<p>观测误差Vk符合正态分布N（0；Rk）</p>
+<p>统称为高斯白噪声。</p>
+<p>GPS检测位置，检测到车子开了1000m，有一个误差Vk</p>
+<p>车在路上行驶，5m/s，1s应该行驶5m，但是可能有顺风和逆风，存在一个误差Wk</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20211214105503.png" alt="image-20211214105503201"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">pos = np.array([</span><br><span class="line">    [<span class="number">10</span>, <span class="number">50</span>],</span><br><span class="line">    [<span class="number">12</span>, <span class="number">49</span>],</span><br><span class="line">    [<span class="number">11</span>, <span class="number">52</span>],</span><br><span class="line">    [<span class="number">13</span>, <span class="number">52.2</span>],</span><br><span class="line">    [<span class="number">12.9</span>, <span class="number">50</span>]], np.float32)  <span class="comment"># 位置数据</span></span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">它有3个输入参数，dynam_params：状态空间的维数，这里为2；measure_param：测量值的维数，这里也为2;</span></span><br><span class="line"><span class="string"> control_params：控制向量的维数，默认为0。由于这里该模型中并没有控制变量，因此也为0。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">kalman = cv2.KalmanFilter(<span class="number">2</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">kalman.measurementMatrix = np.array([[<span class="number">1</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">1</span>]], np.float32)  <span class="comment"># 观测转移矩阵</span></span><br><span class="line">kalman.transitionMatrix = np.array([[<span class="number">1</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">1</span>]], np.float32)  <span class="comment"># 状态转移矩阵</span></span><br><span class="line">kalman.processNoiseCov = np.array([[<span class="number">1</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">1</span>]], np.float32) * <span class="number">1e-3</span>  <span class="comment"># 过程噪声的协方差</span></span><br><span class="line">kalman.measurementNoiseCov = np.array([[<span class="number">1</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">1</span>]], np.float32) * <span class="number">0.01</span>  <span class="comment"># 测量噪声的协方差</span></span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">kalman.measurementNoiseCov为测量系统的协方差矩阵，方差越小，预测结果越接近测量值</span></span><br><span class="line"><span class="string">kalman.processNoiseCov为模型系统的噪声，噪声越大，预测结果越不稳定，越容易接近模型系统预测值，</span></span><br><span class="line"><span class="string">且单步变化越大，相反，若噪声小，则预测结果与上个计算结果相差不大。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">kalman.statePre = np.array([[<span class="number">6</span>], [<span class="number">6</span>]], np.float32)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(pos)):  <span class="comment"># 迭代过程</span></span><br><span class="line">    mes = np.reshape(pos[i, :], (<span class="number">2</span>, <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">    x = kalman.correct(mes)</span><br><span class="line"></span><br><span class="line">    y = kalman.predict()</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(kalman.statePost[<span class="number">0</span>], kalman.statePost[<span class="number">1</span>])</span><br><span class="line">    <span class="built_in">print</span>(kalman.statePre[<span class="number">0</span>], kalman.statePre[<span class="number">1</span>])</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;measurement:\t&#x27;</span>, mes[<span class="number">0</span>], mes[<span class="number">1</span>])</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;correct:\t&#x27;</span>, x[<span class="number">0</span>], x[<span class="number">1</span>])</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;predict:\t&#x27;</span>, y[<span class="number">0</span>], y[<span class="number">1</span>])</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;=&#x27;</span> * <span class="number">30</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="数据平滑"><a href="#数据平滑" class="headerlink" title="数据平滑"></a>数据平滑</h3><p>平滑是滤波实现的一种方法，平滑叫平滑滤波更确切。</p>
+<p>平滑就是去掉信号中没必要的快速起伏的成份，让信号看起来更光滑。本质上就是去掉高频分量。与低通滤波相似。</p>
+<p>如果你去的噪音是跟信号完全<strong>不同的频率成份</strong>，就可以只用滤波的方法。比如说，你的信号是低频，噪音是高频，那一个简简单单的低通滤波器就妥妥的。但是可能会经常会遇到<strong>噪音的频率成份和信号频率成份重合在一起</strong>。滤波的方法是不能用了。那么这个时候，你就必须的借助一些更高级的方法，比如说，自适应滤波，小波变换等等等等。</p>
+<p>下图是低通滤波和五点三次平滑的效果图：</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220311113059.png" alt="image-20220311113059133"></p>
+<h4 id="滑动平均滤波"><a href="#滑动平均滤波" class="headerlink" title="滑动平均滤波"></a>滑动平均滤波</h4><p>滑动平均滤波法是把连续取N个采样值看成一个队列 ，队列的长度固定为N ，每次采样到一个新数据放入队尾，并扔掉原来队首的一次数据(先进先出原则) ，把队列中的N个数据进行算术平均运算，就可获得新的滤波结果。</p>
+<p>优点： 对周期性干扰有良好的抑制作用，平滑度高 适用于高频振荡的系统 </p>
+<p>缺点： 灵敏度低 对偶然出现的脉冲性干扰的抑制作用较差</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">numpy.convolve(a, v, mode=‘full<span class="string">&#x27;)</span></span><br></pre></td></tr></table></figure>
+
+<p>参数：<br>　　a:(N,)输入的一维数组<br>　　v:(M,)输入的第二个一维数组<br>　　mode:{‘full’, ‘valid’, ‘same’}参数可选<br>　　　　‘full’　默认值，返回每一个卷积值，<strong>长度是N+M-1</strong>,在卷积的边缘处，信号不重叠，存在边际效应。<br>　　　　‘same’　返回的数组长度为<code>max(M, N)</code>,==边际效应依旧存在==。<br>　　　　‘valid’ 　返回的数组长度为<code>max(M,N)-min(M,N)+1</code>,此时返回的是完全重叠的点。边缘的点无效。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">np_move_avg</span>(<span class="params">a,n,mode=<span class="string">&quot;same&quot;</span></span>):</span><br><span class="line">  <span class="keyword">return</span>(np.convolve(a, np.ones(n)/n, mode=mode))  <span class="comment"># 算术平均值是(x_1 + x_2 + ... + x_N) / N，所以相应的内核是(1/N, 1/N, ..., 1/N)，这正是我们通过使用得到的np.ones(N)/N</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">tes = np.array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">weight = np.ones(<span class="number">2</span>) / <span class="number">2</span></span><br><span class="line">result = np.convolve(tes, weight, mode=<span class="string">&#x27;full&#x27;</span>)  <span class="comment"># [0.5 1.5 2.5 1.5]</span></span><br><span class="line"><span class="built_in">print</span>(result)</span><br><span class="line">result = np.convolve(tes, weight, mode=<span class="string">&#x27;same&#x27;</span>)  <span class="comment"># [0.5 1.5 2.5]</span></span><br><span class="line"><span class="built_in">print</span>(result)</span><br><span class="line">result = np.convolve(tes, weight, mode=<span class="string">&#x27;vaild&#x27;</span>)  <span class="comment"># [1.5 2.5]</span></span><br><span class="line"><span class="built_in">print</span>(result)</span><br></pre></td></tr></table></figure>
+
+<h4 id="Savitzky-Golay平滑滤波"><a href="#Savitzky-Golay平滑滤波" class="headerlink" title="Savitzky-Golay平滑滤波"></a>Savitzky-Golay平滑滤波</h4><p>SG平滑算法是由Savizkg和Golag提出来的。基于最小二乘原理的多项式平滑算法，也称卷积平滑。其优于滑动平均滤波。</p>
+<p>使用五点平滑算法来说明平滑过程：</p>
+<img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20211210194952.jpg" alt="1433446-20190904203350697-1466434879" style="zoom:80%;" />
+
+<p>把信号一段区间的等波长间隔的5个点记为X集合，多项式平滑就是利用在波长点为Xm-2,Xm-1,Xm,Xm+1,Xm+2的数据的多项式拟合值来取代Xm,，然后依次移动，直到把信号遍历完。（==滑动窗口不能为偶数，且n大于k==）</p>
+<img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20211210195404.png" alt="image-20211210195404225" style="zoom: 67%;" />
+
+<h4 id="五点三次平滑"><a href="#五点三次平滑" class="headerlink" title="五点三次平滑"></a>五点三次平滑</h4><p>五点三次滤波实际上是略微改进之后的Savitzky-Golay滤波器。</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220308154408.png" alt="image-20220308154408256"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> obspy <span class="keyword">import</span> read  <span class="comment"># 针对地震领域开发的python库</span></span><br><span class="line"><span class="keyword">from</span> scipy.signal <span class="keyword">import</span> savgol_filter <span class="keyword">as</span> sgolay</span><br><span class="line"></span><br><span class="line">tr = read()[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 原始信号 s1 及对应的时间 t</span></span><br><span class="line">s1 = tr.data</span><br><span class="line"><span class="comment"># print(tr.stats)</span></span><br><span class="line">t = np.arange(<span class="built_in">len</span>(s1)) * tr.stats.delta  <span class="comment"># tr.stats地震元数据，delta采样间隔,0.01s</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Savitsky-Golay 平滑滤波</span></span><br><span class="line">s2 = sgolay(s1, <span class="number">51</span>, <span class="number">3</span>)  <span class="comment"># 原始数据，滑动窗口大小，拟合多项式的次数</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 5点3次平滑就是用3次多项式和5个数据进行拟合</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">Mean5_3</span>(<span class="params">a, m</span>):  <span class="comment"># a为输入的一维信号,m为进行多少遍平滑，这是对Savitsky-Golay 平滑滤波的改进,可以进行多遍平滑</span></span><br><span class="line">    n = a.size</span><br><span class="line">    b = np.empty(n)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(m):</span><br><span class="line">        b[<span class="number">0</span>] = (<span class="number">69</span> * a[<span class="number">0</span>] + <span class="number">4</span> * (a[<span class="number">1</span>] + a[<span class="number">3</span>]) - <span class="number">6</span> * a[<span class="number">2</span>] - a[<span class="number">4</span>]) / <span class="number">70</span></span><br><span class="line">        b[<span class="number">1</span>] = (<span class="number">2</span> * (a[<span class="number">0</span>] + a[<span class="number">4</span>]) + <span class="number">27</span> * a[<span class="number">1</span>] + <span class="number">12</span> * a[<span class="number">2</span>] - <span class="number">8</span> * a[<span class="number">3</span>]) / <span class="number">35</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, n - <span class="number">2</span>, <span class="number">1</span>):</span><br><span class="line">            b[j] = (-<span class="number">3</span> * (a[j - <span class="number">2</span>] + a[j + <span class="number">2</span>]) + <span class="number">12</span> * (a[j - <span class="number">1</span>] + a[j + <span class="number">1</span>]) + <span class="number">17</span> * a[j]) / <span class="number">35</span></span><br><span class="line">        b[n - <span class="number">2</span>] = (<span class="number">2</span> * (a[n - <span class="number">1</span>] + a[n - <span class="number">5</span>]) + <span class="number">27</span> * a[n - <span class="number">2</span>] + <span class="number">12</span> * a[n - <span class="number">3</span>] - <span class="number">8</span> * a[n - <span class="number">4</span>]) / <span class="number">35</span></span><br><span class="line">        b[n - <span class="number">1</span>] = (<span class="number">69</span> * a[n - <span class="number">1</span>] + <span class="number">4</span> * (a[n - <span class="number">2</span>] + a[n - <span class="number">4</span>]) - <span class="number">6</span> * a[n - <span class="number">3</span>] - a[n - <span class="number">5</span>]) / <span class="number">70</span></span><br><span class="line">        a = b</span><br><span class="line">    <span class="keyword">return</span> b</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">s3 = Mean5_3(s1, <span class="number">50</span>)</span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">311</span>)</span><br><span class="line">plt.plot(t, s1, label=<span class="string">&#x27;Original signal&#x27;</span>)</span><br><span class="line">plt.legend(fontsize=<span class="number">15</span>)</span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">312</span>)</span><br><span class="line">plt.plot(t, s1, label=<span class="string">&#x27;Original signal&#x27;</span>)</span><br><span class="line">plt.plot(t, s2, c=<span class="string">&#x27;red&#x27;</span>, label=<span class="string">&#x27;Savitzky-Golay filtered&#x27;</span>)</span><br><span class="line">plt.legend(fontsize=<span class="number">15</span>)</span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">313</span>)</span><br><span class="line">plt.plot(t, s1, label=<span class="string">&#x27;Original signal&#x27;</span>)</span><br><span class="line">plt.plot(t, s3, c=<span class="string">&#x27;red&#x27;</span>, label=<span class="string">&#x27;Mean5_3 filtered&#x27;</span>)</span><br><span class="line">plt.legend(fontsize=<span class="number">15</span>)</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220310221425.png" alt="Figure_1"></p>
+<h3 id="去趋势项"><a href="#去趋势项" class="headerlink" title="去趋势项"></a>去趋势项</h3><p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/pengchen_wuhan/article/details/118058489">https://blog.csdn.net/pengchen_wuhan/article/details/118058489</a></p>
+<p>在振动测试过程中，传感器或采集设备由于自身性能问题或受环境干扰（如温度、供电等影响），容易产生零漂，而偏离基线，偏离基线的大小甚至还会随时间变化。偏离基线随时间变化的过程称之为信号的趋势项。信号的趋势线将直接影响信号分析的准确性，应该将其消除。常用的去除趋势项的方法是最小二乘法。</p>
+<p>以下实验首先构造包含常数趋势项，线性趋势项和二次曲线趋势项的数据。</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220310190212.png" alt="Filter"></p>
+<p>去趋势项的结果如下：</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20220310190452.png" alt="Filter"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 导入模块</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> sklearn.pipeline <span class="keyword">import</span> Pipeline</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> PolynomialFeatures</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression</span><br><span class="line"></span><br><span class="line"><span class="comment"># 构造模拟信号</span></span><br><span class="line">fre = <span class="number">10</span> <span class="comment"># 信号的频率为10</span></span><br><span class="line">t = np.arange(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0.001</span>)</span><br><span class="line">sig = np.sin(<span class="number">2</span> * np.pi * fre * t) + <span class="number">0.1</span> + <span class="number">0.1</span> * t + <span class="number">0.2</span> * t ** <span class="number">2</span>  <span class="comment"># 包含常数趋势项，线性趋势项和二次曲线趋势项</span></span><br><span class="line">t = t.reshape(-<span class="number">1</span>, <span class="number">1</span>) <span class="comment"># -1表示自动计算，把数组编程1000行1列的二维数组</span></span><br><span class="line">sig = sig.reshape(-<span class="number">1</span>, <span class="number">1</span>) </span><br><span class="line"></span><br><span class="line"><span class="comment">#########################################</span></span><br><span class="line"><span class="comment"># 展示模拟信号</span></span><br><span class="line">plt.plot(t, sig)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;time(s)&#x27;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;signal(m/s^2)&#x27;</span>)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"><span class="comment">########################################</span></span><br><span class="line"><span class="comment"># 构造去除趋势项函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">trend_remove</span>(<span class="params">t, sig, degree</span>):</span><br><span class="line">    <span class="comment"># 构造多项式回归模型</span></span><br><span class="line">    poly_reg = Pipeline([ <span class="comment"># Pieline可以将许多算法模型串联起来</span></span><br><span class="line">        (<span class="string">&#x27;poly&#x27;</span>, PolynomialFeatures(degree=degree)), <span class="comment"># PolynomialFeatures用于生成多项式，degree默认为2，多项式阶次</span></span><br><span class="line">        (<span class="string">&#x27;lin_reg&#x27;</span>, LinearRegression(fit_intercept=<span class="literal">False</span>))]) <span class="comment"># LinearRegression线性回归模型</span></span><br><span class="line">    <span class="comment"># 训练多项式回归模型（即求待定系数）</span></span><br><span class="line">    poly_reg.fit(t, sig) <span class="comment"># fit方法用于训练模型</span></span><br><span class="line">    <span class="comment"># 去除趋势项</span></span><br><span class="line">    sig_predict = poly_reg.predict(t) <span class="comment"># predict进行模型预测</span></span><br><span class="line">    sig_res = sig - sig_predict</span><br><span class="line">    <span class="comment"># 输出趋势项待定系数</span></span><br><span class="line">    model = poly_reg.named_steps[<span class="string">&#x27;lin_reg&#x27;</span>]</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;趋势项待定系数为：&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(model.coef_[<span class="number">0</span>])</span><br><span class="line">    <span class="comment"># 返回去趋势项结果</span></span><br><span class="line">    <span class="keyword">return</span> sig_res</span><br><span class="line"></span><br><span class="line"><span class="comment">########################################</span></span><br><span class="line">sig_res = trend_remove(t, sig, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 展示去除趋势项后的信号</span></span><br><span class="line">plt.plot(t, sig)</span><br><span class="line">plt.plot(t, sig_res)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;time(s)&#x27;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;signal(m/s^2)&#x27;</span>)</span><br><span class="line">plt.legend([<span class="string">&#x27;sig&#x27;</span>,<span class="string">&#x27;sig_res&#x27;</span>])</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Arduino/" rel="tag"># Arduino</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/04/23/%E7%AE%80%E5%8D%95%E7%9A%84%E8%A7%86%E9%A2%91%E7%9B%B4%E6%92%AD%E5%AE%9E%E7%8E%B0/" rel="prev" title="简单的视频直播实现">
+      <i class="fa fa-chevron-left"></i> 简单的视频直播实现
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/04/23/%E7%BC%96%E7%A8%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/" rel="next" title="编程环境配置指南">
+      编程环境配置指南 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Python%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">Python数据处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E5%80%BC%E7%A7%AF%E5%88%86"><span class="nav-number">1.1.</span> <span class="nav-text">数值积分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2"><span class="nav-number">1.2.</span> <span class="nav-text">傅里叶变换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%BB%A4%E6%B3%A2"><span class="nav-number">1.3.</span> <span class="nav-text">数据滤波</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%91%E5%9F%9F%E6%BB%A4%E6%B3%A2"><span class="nav-number">1.3.1.</span> <span class="nav-text">频域滤波</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%B6%E5%9F%9F%E6%BB%A4%E6%B3%A2"><span class="nav-number">1.3.2.</span> <span class="nav-text">时域滤波</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2"><span class="nav-number">1.3.3.</span> <span class="nav-text">卡尔曼滤波</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%B9%B3%E6%BB%91"><span class="nav-number">1.4.</span> <span class="nav-text">数据平滑</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%BB%91%E5%8A%A8%E5%B9%B3%E5%9D%87%E6%BB%A4%E6%B3%A2"><span class="nav-number">1.4.1.</span> <span class="nav-text">滑动平均滤波</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Savitzky-Golay%E5%B9%B3%E6%BB%91%E6%BB%A4%E6%B3%A2"><span class="nav-number">1.4.2.</span> <span class="nav-text">Savitzky-Golay平滑滤波</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%94%E7%82%B9%E4%B8%89%E6%AC%A1%E5%B9%B3%E6%BB%91"><span class="nav-number">1.4.3.</span> <span class="nav-text">五点三次平滑</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%BB%E8%B6%8B%E5%8A%BF%E9%A1%B9"><span class="nav-number">1.5.</span> <span class="nav-text">去趋势项</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="XiaoShi"
+      src="/images/xiaoshi.png">
+  <p class="site-author-name" itemprop="name">XiaoShi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xiaoshi-hd" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiaoshi-hd" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">XiaoShi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+</body>
+</html>

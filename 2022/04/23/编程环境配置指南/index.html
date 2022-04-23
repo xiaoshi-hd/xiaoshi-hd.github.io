@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xiaoshi-hd.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="编程软件IDEA  Java IDE  （社区版免费，但是不支持spring，需要单独安装Java运行环境和Maven） WebStrom  前端 IDE  （需要单独安装Node、WebPack、vue-cli等） PyCharm  Python IDE  （社区版免费，需要单独安装Python、Anacanda等） Android Studio  Android 开发 Navicat  数据库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编程环境配置指南">
+<meta property="og:url" content="https://xiaoshi-hd.github.io/2022/04/23/%E7%BC%96%E7%A8%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:site_name" content="小师的Blog">
+<meta property="og:description" content="编程软件IDEA  Java IDE  （社区版免费，但是不支持spring，需要单独安装Java运行环境和Maven） WebStrom  前端 IDE  （需要单独安装Node、WebPack、vue-cli等） PyCharm  Python IDE  （社区版免费，需要单独安装Python、Anacanda等） Android Studio  Android 开发 Navicat  数据库">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20210420150134.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20210420150756.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20210415215503.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20210416205901.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20210901211334.png">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20210901212022.png">
+<meta property="article:published_time" content="2022-04-23T10:40:53.000Z">
+<meta property="article:modified_time" content="2022-04-23T10:41:48.198Z">
+<meta property="article:author" content="XiaoShi">
+<meta property="article:tag" content="软件">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20210420150134.png">
+
+<link rel="canonical" href="https://xiaoshi-hd.github.io/2022/04/23/%E7%BC%96%E7%A8%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>编程环境配置指南 | 小师的Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">小师的Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://xiaoshi-hd.github.io/2022/04/23/%E7%BC%96%E7%A8%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xiaoshi.png">
+      <meta itemprop="name" content="XiaoShi">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小师的Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          编程环境配置指南
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-04-23 18:40:53 / 修改时间：18:41:48" itemprop="dateCreated datePublished" datetime="2022-04-23T18:40:53+08:00">2022-04-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">其他</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="编程软件"><a href="#编程软件" class="headerlink" title="编程软件"></a>编程软件</h3><p><code>IDEA</code>  Java IDE  （社区版免费，但是不支持<code>spring</code>，需要单独安装<code>Java</code>运行环境和<code>Maven</code>）</p>
+<p><code>WebStrom</code>  前端 IDE  （需要单独安装<code>Node</code>、<code>WebPack</code>、<code>vue-cli</code>等）</p>
+<p><code>PyCharm</code>  Python IDE  （社区版免费，需要单独安装<code>Python</code>、<code>Anacanda</code>等）</p>
+<p><code>Android Studio</code>  Android 开发</p>
+<p><code>Navicat</code>  数据库连接</p>
+<p><code>secureCRT</code>  SSH连接</p>
+<p><code>Postman</code>  测试后台接口</p>
+<p><code>Sublime</code>  查看代码  （需要再装个格式化代码的插件<a target="_blank" rel="noopener" href="https://www.cnblogs.com/wghao/p/6026107.html">CodeFormatter</a>）</p>
+<p><code>Visual Studio Code</code> 查看代码</p>
+<p><code>Typora + PicGo</code>  写笔记，图片上传gitee图床（PigGo需要装gitee插件，gitee建立仓库配置token，<a target="_blank" rel="noopener" href="https://blog.csdn.net/disILLL/article/details/103962241?utm_medium=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromMachineLearnPai2~default-2.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromMachineLearnPai2~default-2.control">参考</a>，不过现在推荐阿里云OSS）</p>
+<p><code>Git</code>  代码版本控制  （不会命令行的话可以辅助安装<code>TortoiseGit</code>）</p>
+<p><code>Windows Terminal</code> 命令行 （Win + R 输入wt打开，在文件夹下输入<code>wt -d . </code>打开）</p>
+<p><code>Visual Studio 2019</code>  C C++ C# IDE</p>
+<p><code>微信开发者工具</code>  用于开发微信小程序</p>
+<p><code>IDEA</code>个性化设置及插件：装两个插件<code>Lombok</code>和<a target="_blank" rel="noopener" href="https://blog.csdn.net/cnds123321/article/details/102858985"><code>Background Image Plus</code></a>。</p>
+<p><code>Visual Studio Code</code> 个性化设置及插件</p>
+<p><code>Visual Studio 2019</code>个性化设置及插件（<code>XAML Style</code>、<code>CodeMaid</code>、<code>Output enhancer</code>）</p>
+<p>视频播放器：<code>VLC media player</code>和<code>PotPlayer</code></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/35757176">PotPlayer播放器个性化设置</a></p>
+<p><code>dism++</code>对系统进行个性化设置</p>
+<p><code>RightMenuMgr</code>对系统右键菜单进行个性化设置</p>
+<h4 id="git的安装和使用"><a href="#git的安装和使用" class="headerlink" title="git的安装和使用"></a>git的安装和使用</h4><p>详细安装教程（一般来说全部默认就可以了）：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/xueweisuoyong/p/11914045.html">https://www.cnblogs.com/xueweisuoyong/p/11914045.html</a></p>
+<p>查看版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git --version</span><br></pre></td></tr></table></figure>
+
+<p>首先设置本地git账户：</p>
+<ol>
+<li>查看用户名和邮箱地址：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git config user.name </span><br><span class="line"></span><br><span class="line">git config user.email </span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>修改用户名和邮箱地址：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name <span class="string">&quot;Your Name&quot;</span></span><br><span class="line"></span><br><span class="line">git config --global user.email <span class="string">&quot;email@example.com&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>之后的使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> url  // 从远程克隆</span><br><span class="line"></span><br><span class="line">git init  // 初始化本地仓库</span><br><span class="line"></span><br><span class="line">git add .  // 添加所有文件到暂存区</span><br><span class="line"></span><br><span class="line">git commit -m <span class="string">&quot;描述&quot;</span>  // 将暂存区的文件一次性提交到工作区</span><br><span class="line"></span><br><span class="line">git remote add origin <span class="string">&#x27;远程仓库地址&#x27;</span>  // 关联远程仓库</span><br><span class="line"></span><br><span class="line">git push -u origin master  // 第一次推</span><br><span class="line"> </span><br><span class="line">git push origin master  // 推送</span><br><span class="line"></span><br><span class="line">git pull origin master  // 拉取</span><br></pre></td></tr></table></figure>
+
+<p>笔记文件git仓库：<a target="_blank" rel="noopener" href="https://gitee.com/xiaoshihd/mynote.git">https://gitee.com/xiaoshihd/mynote.git</a></p>
+<h4 id="Node-js的安装和使用"><a href="#Node-js的安装和使用" class="headerlink" title="Node.js的安装和使用"></a>Node.js的安装和使用</h4><p>参考这个：<a target="_blank" rel="noopener" href="https://www.npmjs.cn/getting-started/what-is-npm/">https://www.npmjs.cn/getting-started/what-is-npm/</a></p>
+<p>安装一般也都是全部默认即可。安装完成之后自带npm包管理器。</p>
+<p>node查看版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br></pre></td></tr></table></figure>
+
+<p>新建helloworls.js文件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Hello World&quot;</span>); </span><br></pre></td></tr></table></figure>
+
+<p>node直接运行js文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node helloworld.js</span><br></pre></td></tr></table></figure>
+
+<p>npm查看版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm -v</span><br></pre></td></tr></table></figure>
+
+<p>安装完成之后尽量更新一下npm：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install npm@latest -g. </span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g npm</span><br></pre></td></tr></table></figure>
+
+<p>之后换国内镜像：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm config <span class="built_in">set</span> registry https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+
+<p>配置后可通过下面方式来验证是否成功：</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm config get registry</span><br></pre></td></tr></table></figure>
+
+<p>如果不需要了还可以切换回官方镜像：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm config <span class="built_in">set</span> registry https://registry.npmjs.org/</span><br></pre></td></tr></table></figure>
+
+<p>或者使用cnpm（之后的下载安装命令都换为cnpm）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g cnpm --registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>全局安装包：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install webpack -g // 或者 npm install webpack --global</span><br></pre></td></tr></table></figure>
+
+<p>包安装在Node安装目录下的node_modules文件夹中，一般在 <code>C:\Users\用户名\AppData\Roaming\npm\node_modules</code> 目录下，可以使用以下命令查看全局安装目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm root -g</span><br></pre></td></tr></table></figure>
+
+<p>全局安装后可以供命令行(command line)使用，用户可以在命令行中直接运行该组件包支持的命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm update -g webpack    // 全局更新包</span><br><span class="line"></span><br><span class="line">npm uninstall -g webpack  // 卸载全局包</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>本地安装包：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">npm install echarts</span><br><span class="line"></span><br><span class="line">npm install echarts --save  // 或者 npm install echarts -S</span><br><span class="line"></span><br><span class="line">npm install webpack --save-dev</span><br></pre></td></tr></table></figure>
+
+<p>执行该命令后会在当前目录生成<code>node_modules</code>文件夹，包安装在这个文件夹下。</p>
+<p><code>package-lock.json</code>文件也是自动生成的，记录安装包的信息。</p>
+<p>如果在本地目录中没有 <code>package.json</code> 这个文件的话，那么最新版本的包会被安装。如果存在 <code>package.json</code> 文件，则会在 <code>package.json</code> 文件中查找符合规则的最新版本。</p>
+<p>package.json文件需要手动创，执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm init   </span><br><span class="line"></span><br><span class="line">npm init --<span class="built_in">yes</span>  // 创建默认的package.json</span><br></pre></td></tr></table></figure>
+
+<p>执行<code>npm run 命令</code>，<code>package.json</code>中的<code>scripts</code>会按照一定顺序寻找对应命令的位置。</p>
+<p>参数<code>--save</code>的含义是代表把你的安装包信息写入package.json文件的<code>dependencies</code>字段中。</p>
+<p>参数<code>--save-dev</code>的含义是代表把你的安装包信息写入package.json文件的<code>devDependencies</code>字段中。</p>
+<p>这两个字段的作用就是方便根据<code>package.json</code>文件安装依赖包。比如拿到别人的项目：</p>
+<ul>
+<li>需要安装之前package.json中devDpendencies 和 dependencies两个模块下所列举的依赖：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>只需要安装之前package.json中dependencies 模块下所列举的依赖：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install packagename</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>只需要安装之前package.json中devdependencies 模块下所列举的依赖：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install packagename -dev</span><br></pre></td></tr></table></figure>
+
+<p>本地更新包：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm update echarts</span><br></pre></td></tr></table></figure>
+
+<p>本地卸载包：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall echarts</span><br></pre></td></tr></table></figure>
+
+<p>如需从 <code>package.json</code> 文件中删除依赖，需要在命令后添加参数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall --save echarts</span><br><span class="line"></span><br><span class="line">npm uninstall --save-dev echarts</span><br></pre></td></tr></table></figure>
+
+<p><strong>搭建Vue开发环境：</strong></p>
+<ol>
+<li>安装webpack：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install webpack -g</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>安装vue-cli</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --global vue-cli</span><br></pre></td></tr></table></figure>
+
+<p>验证命令：<code>vue -V</code></p>
+<p>如果提示“在此系统上禁用脚本”，以管理员身份打开命令提示符，输入以下命令开启即可：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set-ExecutionPolicy RemoteSigned </span><br></pre></td></tr></table></figure>
+
+<p>创建Vue项目：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vue init webpack vue-demo //项目名</span><br></pre></td></tr></table></figure>
+
+<h4 id="Python的安装和使用"><a href="#Python的安装和使用" class="headerlink" title="Python的安装和使用"></a>Python的安装和使用</h4><p>Python安装的时候注意勾选添加环境变量。安装的时候自带pip包管理工具。</p>
+<p>查看版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python --version</span><br><span class="line"></span><br><span class="line">pip --version</span><br></pre></td></tr></table></figure>
+
+<p><strong>升级 pip</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -U pip</span><br></pre></td></tr></table></figure>
+
+<p><strong>pip换源</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip install SomePackage -i https://pypi.tuna.tsinghua.edu.cn/simple  <span class="comment"># 临时</span></span><br><span class="line"></span><br><span class="line">pip config <span class="built_in">set</span> global.index-url https://pypi.tuna.tsinghua.edu.cn/simple <span class="comment"># 永久</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip config list  <span class="comment"># 查看当前源</span></span><br></pre></td></tr></table></figure>
+
+<p>pip的安装包一般在：<code>C:\Users\用户名\AppData\Local\Programs\Python\PythonXX\Lib\site-packages</code>下面。</p>
+<p><strong>安装包</strong> </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip install SomePackage              # 最新版本</span><br><span class="line">pip install SomePackage==1.0.4       # 指定版本</span><br><span class="line">pip install &#x27;SomePackage&gt;=1.0.4&#x27;     # 最小版本</span><br></pre></td></tr></table></figure>
+
+<p><strong>升级包</strong> </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install --upgrade SomePackage</span><br></pre></td></tr></table></figure>
+
+<p>升级指定的包，通过使用==, &gt;=, &lt;=, &gt;, &lt; 来指定一个版本号。</p>
+<p><strong>卸载包</strong> </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip uninstall SomePackage</span><br></pre></td></tr></table></figure>
+
+<p><strong>搜索包</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip search SomePackage</span><br></pre></td></tr></table></figure>
+
+<p><strong>显示安装包信息</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip show </span><br></pre></td></tr></table></figure>
+
+<p><strong>查看指定包的详细信息</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip show -f SomePackage</span><br></pre></td></tr></table></figure>
+
+<p><strong>列出已安装的包</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip list</span><br></pre></td></tr></table></figure>
+
+<p><strong>查看可升级的包</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip list -o</span><br></pre></td></tr></table></figure>
+
+<h4 id="Anaconda的安装和使用"><a href="#Anaconda的安装和使用" class="headerlink" title="Anaconda的安装和使用"></a>Anaconda的安装和使用</h4><p>anaconda安装的时候也是要注意一下勾选添加环境变量的选项。</p>
+<p>推荐直接安装这个，要不然用到什么包都pip安装，偶尔还报错烦死你。而且anaconda安装进来后就已经安装了python、pip和conda。</p>
+<h4 id="Java的安装和使用"><a href="#Java的安装和使用" class="headerlink" title="Java的安装和使用"></a>Java的安装和使用</h4><p>从<a target="_blank" rel="noopener" href="https://www.oracle.com/java/technologies/javase-downloads.html">Oracle的官网</a>下载 JDK安装，<strong>推荐1.8版本</strong>。</p>
+<p>安装完成后设置环境变量：</p>
+<p>设置一个<code>JAVA_HOME</code>的系统环境变量，它指向JDK的安装目录。</p>
+<p>通常Eclipse/IntelliJ Idea/Tomcat等软件就是通过搜索JAVA_HOME变量来找到并使用安装好的jdk。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Program Files\Java\jdk-14</span><br></pre></td></tr></table></figure>
+
+<p>然后，把<code>JAVA_HOME</code>的<code>bin</code>目录附加到系统环境变量<code>PATH</code>上。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%JAVA_HOME%\bin</span><br></pre></td></tr></table></figure>
+
+<p>把<code>JAVA_HOME</code>的<code>bin</code>目录添加到<code>PATH</code>中是为了在任意文件夹下都可以运行<code>java</code>。打开命令提示符窗口，输入命令<code>java -version</code>，即可看到版本信息。</p>
+<p><code>bin</code>目录下的<code>java</code>可执行程序其实就是JVM，<strong>运行Java程序，就是启动JVM</strong>，然后让JVM执行指定的编译后的代码。</p>
+<p>之后设置<code>CLASSPATH</code>系统环境变量:</p>
+<p>JDK在默认情况下会到当前工作目录下(变量值用“<code>.</code>”表示)以及JDK的lib目录下寻找所需的class文件，因此如果Java程序放在这两个目录中，即使不设置CLASSPATH变量执行环境也可以找得到。但是如果Java程序放在其他目录下，运行时则需要设置CLASSPATH变量。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.;%JAVA_HOME%\lib\tools.jar;%JAVA_HOME%\lib\dt.jar</span><br></pre></td></tr></table></figure>
+
+<h4 id="Maven的安装和使用"><a href="#Maven的安装和使用" class="headerlink" title="Maven的安装和使用"></a>Maven的安装和使用</h4><p>IDEA安装的时候其实自带的有maven，也就是下面这个：</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20210420150134.png" alt="image-20210420150127109"></p>
+<p>但是建议自己安装配置，用起来比较靠谱，<strong>推荐3.6.1版本</strong>。</p>
+<p>设置使用本地maven：</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20210420150756.png" alt="image-20210420150756608"></p>
+<ol>
+<li>前往<a target="_blank" rel="noopener" href="https://maven.apache.org/download.cgi%E4%B8%8B%E8%BD%BD%E6%9C%80%E6%96%B0%E7%89%88%E7%9A%84Maven%E7%A8%8B%E5%BA%8F%EF%BC%9A">https://maven.apache.org/download.cgi下载最新版的Maven程序：</a></li>
+</ol>
+<img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20210415215503.png" alt="20190603100924625" style="zoom:80%;" />
+
+<ol start="2">
+<li><p>将文件解压到<code>C:\Program Files\Apache\</code>目录下:</p>
+</li>
+<li><p>新建环境变量<code>MAVEN_HOME</code>，赋值<code>D:\Program Files\Apache\apache-maven-3.8.1</code></p>
+</li>
+<li><p>编辑环境变量Path，追加<code>%MAVEN_HOME%\bin</code></p>
+</li>
+<li><p><code>mvn --version</code>查看是否安装成功</p>
+</li>
+</ol>
+<p>maven安装目录下的<code>conf\settings.xml</code>文件是maven的配置文件。</p>
+<p><strong>配置本地仓库</strong>：</p>
+<p>localRepository节点用于配置本地仓库，默认是注释掉的，它的默认地址是 <code>C:\Users\用户名\.m2\repository</code>。</p>
+<p>如果有需要可以进行更改到指定文件夹（<strong>路径不要有空格和中文</strong>）：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">localRepository</span>&gt;</span>D:\maven\repository<span class="tag">&lt;/<span class="name">localRepository</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>maven下载依赖由于要访问国外服务器，所以有时候会很慢。需要配置中央仓库：</p>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/102512.html?spm=a2c40.aliyun_maven_repo.0.0.36183054eGk3vS">https://help.aliyun.com/document_detail/102512.html?spm=a2c40.aliyun_maven_repo.0.0.36183054eGk3vS</a></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mirror</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span>&gt;</span>aliyunmaven<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mirrorOf</span>&gt;</span>*<span class="tag">&lt;/<span class="name">mirrorOf</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>阿里云公共仓库<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url</span>&gt;</span>https://maven.aliyun.com/repository/public<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mirror</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果有问题，就在IDEA里面配置忽略ssl证书的验证：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-Dmaven.wagon.http.ssl.insecure=<span class="literal">true</span> -Dmaven.wagon.http.ssl.allowall=<span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20210416205901.png" alt="2020022719493843" style="zoom:80%;" />
+
+<p>mevan官方仓库：<a target="_blank" rel="noopener" href="https://mvnrepository.com/">https://mvnrepository.com/</a></p>
+<p>要找仓库的地址可以在这里找。</p>
+<p>比如mybatis：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- https://mvnrepository.com/artifact/org.mybatis/mybatis --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.5.3<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="GCC的安装和使用"><a href="#GCC的安装和使用" class="headerlink" title="GCC的安装和使用"></a>GCC的安装和使用</h4><p>下载地址：<a target="_blank" rel="noopener" href="https://sourceforge.net/projects/mingw/files/latest/download">https://sourceforge.net/projects/mingw/files/latest/download</a></p>
+<p>下载进来之后在线安装，全部勾选：</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20210901211334.png" alt="image-20210901211334534"></p>
+<p>点击 Installation &gt; Apply Changes ，等待安装完成。</p>
+<img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20210901212022.png" alt="image-20210901212022932" style="zoom:80%;" />
+
+<p>把<code>C:\MinGW\bin</code>添加到环境变量。在cmd命令提示符里面输入 gcc –help 回车查看是否安装成功。</p>
+<p>上面这个安装方式太慢了，我还是下载codeblocks吧。</p>
+<p>下载链接：<a target="_blank" rel="noopener" href="https://www.codeblocks.org/downloads/binaries/">https://www.codeblocks.org/downloads/binaries/</a></p>
+<p>选择codeblocks-20.03mingw-nosetup.zip</p>
+<p>解压后把 <code>D:\CodeBlocks\MinGW\bin</code>加到系统变量里的path里。</p>
+<p>gcc 命令编译格式 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc test.c -o <span class="built_in">test</span> </span><br></pre></td></tr></table></figure>
+
+<p>之后直接输入test即可运行。</p>
+<p>对于C++：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g++ test.cpp -o test2 </span><br></pre></td></tr></table></figure>
+
+<p>用gcc(g++)编译器 执行-o（链接命令，（其实包括了编译，汇编，链接）），指定test(test2)作为输出的exe的文件名，对test.c(test.cpp)执行。</p>
+<p>-S是输出的.s文件（将c语言编译成汇编语言），</p>
+<p>-c是输出.o文件（将汇编语言汇编成目标文件），</p>
+<p>-o就是输出.exe文件了（将目标文件链接，输出exe文件）</p>
+<h4 id="Sublime-Text教程"><a href="#Sublime-Text教程" class="headerlink" title="Sublime Text教程"></a>Sublime Text教程</h4><p>基础配置：Preferences/Setting</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">	<span class="attr">&quot;ignored_packages&quot;</span><span class="punctuation">:</span></span><br><span class="line">	<span class="punctuation">[</span></span><br><span class="line">		<span class="string">&quot;Vintage&quot;</span><span class="punctuation">,</span></span><br><span class="line">	<span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">	<span class="attr">&quot;font_size&quot;</span><span class="punctuation">:</span> <span class="number">11</span><span class="punctuation">,</span></span><br><span class="line">	<span class="attr">&quot;update_check&quot;</span><span class="punctuation">:</span><span class="keyword">false</span><span class="punctuation">,</span></span><br><span class="line">	<span class="attr">&quot;show_encoding&quot;</span><span class="punctuation">:</span> <span class="keyword">true</span><span class="punctuation">,</span></span><br><span class="line">	<span class="attr">&quot;show_line_endings&quot;</span><span class="punctuation">:</span> <span class="keyword">true</span><span class="punctuation">,</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>插件配置：使用快捷键 “ Ctl+Shift+P ”，再选择 “<strong>Package Control: Install Package</strong>“</p>
+<p>等待列出可安装的插件列表，输入”==CodeFormatter==”找到它，并点击即可安装。</p>
+<p>CodeFormatter插件能支持常见的几种编程语言格式化：</p>
+<ul>
+<li>PHP </li>
+<li>JavaScript/JSON </li>
+<li>HTML</li>
+<li>CSS </li>
+<li>SCSS </li>
+<li>Python</li>
+<li>Visual Basic/VBScript</li>
+<li>Coldfusion/Railo/Lucee</li>
+</ul>
+<p><strong>Ctrl+Alt+F</strong>格式化快捷键。</p>
+<p>C、C++、C#、Java使用==SublimeAStyleFormatter==</p>
+<p>根据自己的编程环境需要，可通过”Preferences &gt; package setttings &gt; codeFormatter &gt; settings-user“设置一些参数，如PHP的安装路径。 </p>
+<p>Sublime text不支持GB2312和GBK编码，汉会被当成UTF-8编码进行转换，就会出现乱码。这个时候可以安装插件==ConvertToUTF8==。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%BD%AF%E4%BB%B6/" rel="tag"># 软件</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/04/23/Python%E7%A6%BB%E6%95%A3%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/" rel="prev" title="Python离散数据处理">
+      <i class="fa fa-chevron-left"></i> Python离散数据处理
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E7%A8%8B%E8%BD%AF%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">编程软件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#git%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="nav-number">1.1.</span> <span class="nav-text">git的安装和使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-js%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="nav-number">1.2.</span> <span class="nav-text">Node.js的安装和使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Python%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="nav-number">1.3.</span> <span class="nav-text">Python的安装和使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Anaconda%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="nav-number">1.4.</span> <span class="nav-text">Anaconda的安装和使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="nav-number">1.5.</span> <span class="nav-text">Java的安装和使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Maven%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="nav-number">1.6.</span> <span class="nav-text">Maven的安装和使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GCC%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="nav-number">1.7.</span> <span class="nav-text">GCC的安装和使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Sublime-Text%E6%95%99%E7%A8%8B"><span class="nav-number">1.8.</span> <span class="nav-text">Sublime Text教程</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="XiaoShi"
+      src="/images/xiaoshi.png">
+  <p class="site-author-name" itemprop="name">XiaoShi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xiaoshi-hd" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiaoshi-hd" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">XiaoShi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+</body>
+</html>
