@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xiaoshi-hd.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Android嵌入Vue实现H5应用现在很多的App里都内置了Web网页（Hybrid App），比如说很多电商平台，淘宝、京东、聚划算等等。 他们的页面是由Android的WebView实现的，其中涉及到Android客户端与Web网页的交互。 Android WebView组件可以实现App中内置网页的功能。 WebView是一个基于webkit引擎、展现web页面的控件。  Android的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android嵌入Vue实现H5应用">
+<meta property="og:url" content="https://xiaoshi-hd.github.io/2022/04/22/Android%E5%B5%8C%E5%85%A5Vue%E5%AE%9E%E7%8E%B0H5%E5%BA%94%E7%94%A8/index.html">
+<meta property="og:site_name" content="小师的Blog">
+<meta property="og:description" content="Android嵌入Vue实现H5应用现在很多的App里都内置了Web网页（Hybrid App），比如说很多电商平台，淘宝、京东、聚划算等等。 他们的页面是由Android的WebView实现的，其中涉及到Android客户端与Web网页的交互。 Android WebView组件可以实现App中内置网页的功能。 WebView是一个基于webkit引擎、展现web页面的控件。  Android的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20211207214944.png">
+<meta property="article:published_time" content="2022-04-22T09:20:30.000Z">
+<meta property="article:modified_time" content="2022-04-23T03:03:17.568Z">
+<meta property="article:author" content="XiaoShi">
+<meta property="article:tag" content="APP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20211207214944.png">
+
+<link rel="canonical" href="https://xiaoshi-hd.github.io/2022/04/22/Android%E5%B5%8C%E5%85%A5Vue%E5%AE%9E%E7%8E%B0H5%E5%BA%94%E7%94%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Android嵌入Vue实现H5应用 | 小师的Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">小师的Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://xiaoshi-hd.github.io/2022/04/22/Android%E5%B5%8C%E5%85%A5Vue%E5%AE%9E%E7%8E%B0H5%E5%BA%94%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xiaoshi.png">
+      <meta itemprop="name" content="XiaoShi">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小师的Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android嵌入Vue实现H5应用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-22 17:20:30" itemprop="dateCreated datePublished" datetime="2022-04-22T17:20:30+08:00">2022-04-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-23 11:03:17" itemprop="dateModified" datetime="2022-04-23T11:03:17+08:00">2022-04-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Android嵌入Vue实现H5应用"><a href="#Android嵌入Vue实现H5应用" class="headerlink" title="Android嵌入Vue实现H5应用"></a>Android嵌入Vue实现H5应用</h2><p>现在很多的App里都内置了Web网页（Hybrid App），比如说很多电商平台，淘宝、京东、聚划算等等。</p>
+<p>他们的页面是由Android的WebView实现的，其中涉及到Android客户端与Web网页的交互。</p>
+<p>Android WebView组件可以实现App中内置网页的功能。</p>
+<p><code>WebView</code>是一个基于<code>webkit</code>引擎、展现<code>web</code>页面的控件。</p>
+<blockquote>
+<p>Android的Webview在低版本和高版本采用了不同的webkit版本内核，4.4后直接使用了Chrome。</p>
+</blockquote>
+<p>作用为：</p>
+<ul>
+<li>显示和渲染Web页面</li>
+<li>直接使用html文件（网络上或本地assets中）作布局</li>
+<li>可和JavaScript交互调用</li>
+</ul>
+<p>==参考WebView教程==：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3c94ae673e2a">https://www.jianshu.com/p/3c94ae673e2a</a></p>
+<p>AndroidManifest.xml<code>添加访问网络权限</code>：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">&quot;android.permission.INTERNET&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>WebViews只能加载HTTPS的站点，无法加载HTTP站点。当加载HTTP站点时，会报错<code>net :: ERR_CLEARTEXT_NOT_PERMITTED</code>。</p>
+<p>在AndroidManifest.xml的<code>application</code>标签下配置：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">application</span></span></span><br><span class="line"><span class="tag">    <span class="attr">....</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:usesCleartextTraffic</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">....</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>activity_main.xml</code>添加WebView组件：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">WebView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">&quot;@+id/webview&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">&quot;match_parent&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>MainActivity</code>找到该组件：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">WebView</span> <span class="variable">webView</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">onCreate</span><span class="params">(Bundle savedInstanceState)</span> &#123;</span><br><span class="line">    <span class="built_in">super</span>.onCreate(savedInstanceState);</span><br><span class="line">    setContentView(R.layout.activity_main);</span><br><span class="line"></span><br><span class="line">    webView = (WebView) findViewById(R.id.webview);</span><br><span class="line"></span><br><span class="line">    webView.loadUrl(<span class="string">&quot;https://xiaoshiapp.city/h5/index.html&quot;</span>); <span class="comment">// 加载远程网页</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Webview常用的工具类：</p>
+<ul>
+<li>WebSettings类：对WebView进行配置和管理</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 声明WebSettings子类</span></span><br><span class="line"><span class="type">WebSettings</span> <span class="variable">webSettings</span> <span class="operator">=</span> webView.getSettings();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 如果访问的页面中要与Javascript交互，则webview必须设置支持Javascript</span></span><br><span class="line">webSettings.setJavaScriptEnabled(<span class="literal">true</span>);  </span><br><span class="line"><span class="comment">// 若加载的 html 里有JS 在执行动画等操作，会造成资源浪费（CPU、电量）</span></span><br><span class="line"><span class="comment">// 在 onStop 和 onResume 里分别把 setJavaScriptEnabled() 给设置成 false 和 true 即可</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//支持插件</span></span><br><span class="line">webSettings.setPluginsEnabled(<span class="literal">true</span>); </span><br><span class="line"></span><br><span class="line"><span class="comment">//设置自适应屏幕，两者结合使用</span></span><br><span class="line">webSettings.setUseWideViewPort(<span class="literal">true</span>); <span class="comment">// 将图片调整到适合webview的大小 </span></span><br><span class="line">webSettings.setLoadWithOverviewMode(<span class="literal">true</span>); <span class="comment">// 缩放至屏幕的大小</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//缩放操作</span></span><br><span class="line">webSettings.setSupportZoom(<span class="literal">true</span>); <span class="comment">// 支持缩放，默认为true。是下面操作的前提，结合使用</span></span><br><span class="line">webSettings.setBuiltInZoomControls(<span class="literal">true</span>); <span class="comment">// 设置内置的缩放控件。若为false，则该WebView不可缩放</span></span><br><span class="line">webSettings.setDisplayZoomControls(<span class="literal">false</span>); <span class="comment">// 隐藏原生的缩放控件</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 缓存操作</span></span><br><span class="line">webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE); </span><br><span class="line"><span class="comment">//缓存模式如下：</span></span><br><span class="line"><span class="comment">//LOAD_CACHE_ONLY: 不使用网络，只读取本地缓存数据</span></span><br><span class="line"><span class="comment">//LOAD_DEFAULT: （默认）根据cache-control决定是否从网络上取数据。</span></span><br><span class="line"><span class="comment">//LOAD_NO_CACHE: 不使用缓存，只从网络获取数据.</span></span><br><span class="line"><span class="comment">//LOAD_CACHE_ELSE_NETWORK，只要本地有，无论是否过期，或者no-cache，都使用缓存中的数据。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//其他细节操作</span></span><br><span class="line">webSettings.setAllowFileAccess(<span class="literal">true</span>); <span class="comment">// 设置可以访问文件 </span></span><br><span class="line">webSettings.setJavaScriptCanOpenWindowsAutomatically(<span class="literal">true</span>); <span class="comment">// 支持通过JS打开新窗口 </span></span><br><span class="line">webSettings.setLoadsImagesAutomatically(<span class="literal">true</span>); <span class="comment">// 支持自动加载图片</span></span><br><span class="line">webSettings.setDefaultTextEncodingName(<span class="string">&quot;utf-8&quot;</span>);<span class="comment">// 设置编码格式</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>WebViewClient类：处理各种通知 &amp; 请求事件</li>
+</ul>
+<p>onPageStarted()</p>
+<p>作用：开始载入页面调用的，我们可以设定一个loading的页面，告诉用户程序在等待网络响应。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">webView.setWebViewClient(<span class="keyword">new</span> <span class="title class_">WebViewClient</span>()&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span>  <span class="title function_">onPageStarted</span><span class="params">(WebView view, String url, Bitmap favicon)</span> &#123;</span><br><span class="line">        <span class="comment">//设定加载开始的操作</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>onPageFinished()</p>
+<p>作用：在页面加载结束时调用。我们可以关闭loading 条，切换程序动作。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">webView.setWebViewClient(<span class="keyword">new</span> <span class="title class_">WebViewClient</span>()&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onPageFinished</span><span class="params">(WebView view, String url)</span> &#123;</span><br><span class="line">        <span class="comment">//设定加载结束的操作</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>WebChromeClient类：辅助 WebView 处理 Javascript 的对话框,网站图标,网站标题等等</li>
+</ul>
+<p>onProgressChanged（）</p>
+<p>作用：获得网页的加载进度并显示</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">webview.setWebChromeClient(<span class="keyword">new</span> <span class="title class_">WebChromeClient</span>()&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onProgressChanged</span><span class="params">(WebView view, <span class="type">int</span> newProgress)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (newProgress &lt; <span class="number">100</span>) &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">progress</span> <span class="operator">=</span> newProgress + <span class="string">&quot;%&quot;</span>;</span><br><span class="line">            progress.setText(progress);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="WebView与JavaScript的交互"><a href="#WebView与JavaScript的交互" class="headerlink" title="WebView与JavaScript的交互"></a>WebView与JavaScript的交互</h3><p>在WebView的开发中，经常需要用到本地函数与H5界面或者Js交互，传递数据等，但是Android本身自带的WebView与Js交互方式存在安全隐患问题，故不详细展开，需要可以看下面的教程链接。</p>
+<p>Android与JS通过WebView互相调用方法，实际上是：</p>
+<ul>
+<li>Android去调用JS的代码</li>
+<li>JS去调用Android的代码</li>
+</ul>
+<p>对于Android调用JS代码的方法有2种：</p>
+<ol>
+<li>通过<code>WebView</code>的<code>loadUrl（）</code></li>
+<li>通过<code>WebView</code>的<code>evaluateJavascript（）</code></li>
+</ol>
+<p>对于JS调用Android代码的方法有3种：</p>
+<ol>
+<li>通过<code>WebView</code>的<code>addJavascriptInterface（）</code>进行对象映射</li>
+<li>通过 <code>WebViewClient</code> 的<code>shouldOverrideUrlLoading ()</code>方法回调拦截 url</li>
+<li>通过 <code>WebChromeClient</code> 的<code>onJsAlert()</code>、<code>onJsConfirm()</code>、<code>onJsPrompt（）</code>方法回调拦截JS对话框<code>alert()</code>、<code>confirm()</code>、<code>prompt（）</code> 消息</li>
+</ol>
+<p>==参考教程==：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/345f4d8a5cfa">https://www.jianshu.com/p/345f4d8a5cfa</a></p>
+<h3 id="JsBridge实现交互"><a href="#JsBridge实现交互" class="headerlink" title="JsBridge实现交互"></a>JsBridge实现交互</h3><p>为解决Android原生方法的安全隐患问题，推荐使用WebViewJavascriptBridge。</p>
+<p>GitHub地址：<a target="_blank" rel="noopener" href="https://github.com/lzyzsd/JsBridge">https://github.com/lzyzsd/JsBridge</a></p>
+<p>Android和JS互调（调用相机拍照）</p>
+<p>首先是Android写了一个拍照的方法<code>openCamera</code>，使用bridge暴露出去，JS调用该方法，成功后返回给JS<code>success</code>。</p>
+<p>拍照完成后Android调用JS暴露的方法<code>picPath</code>将base64字符串传给JS。</p>
+<p><img src="https://xiaoshi-blog-img.oss-cn-beijing.aliyuncs.com/img/20211207214944.png" alt="image-20211207214936885"></p>
+<h4 id="Android配置"><a href="#Android配置" class="headerlink" title="Android配置"></a>Android配置</h4><p>根目录下的<code>build.gradle</code>（全局的项目构建配置）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        google()</span><br><span class="line">        jcenter()</span><br><span class="line">        maven &#123; url <span class="string">&quot;https://jitpack.io&quot;</span> &#125;  <span class="comment">// 添加依赖源,JitPack.io 是一个 GitHub 开源代码库的便捷发布渠道</span></span><br><span class="line">    &#125;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        classpath <span class="string">&#x27;com.android.tools.build:gradle:3.5.2&#x27;</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// <span class="doctag">NOTE:</span> Do not place your application dependencies here; they belong</span></span><br><span class="line">        <span class="comment">// in the individual module build.gradle files</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">allprojects &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        google()</span><br><span class="line">        jcenter()</span><br><span class="line">        maven &#123; url <span class="string">&quot;https://jitpack.io&quot;</span> &#125;  <span class="comment">// 添加依赖源</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>APP目录下的<code>build.gradle</code>（app模块的gradle构建脚本，一般用来管理app包名、版本的以及添加和修改依赖库）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    compile <span class="string">&#x27;com.github.lzyzsd:jsbridge:1.0.4&#x27;</span>  <span class="comment">// 添加依赖</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用：</p>
+<p>xml界面添加组件：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">com.github.lzyzsd.jsbridge.BridgeWebView</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">&quot;@+id/activity_jsbridge_bridgewebview&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">&quot;match_parent&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">com.github.lzyzsd.jsbridge.BridgeWebView</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>Activity找到组件：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> BridgeWebView bridgeWebView;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">onCreate</span><span class="params">(Bundle savedInstanceState)</span> &#123;</span><br><span class="line">    <span class="built_in">super</span>.onCreate(savedInstanceState);</span><br><span class="line">    setContentView(R.layout.activity_js_bridge);</span><br><span class="line">    initView();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 初始化View</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">initView</span><span class="params">()</span> &#123;</span><br><span class="line">    bridgeWebView = findViewById(R.id.activity_jsbridge_bridgewebview);</span><br><span class="line">    bridgeWebView.loadUrl(<span class="string">&quot;https://www.cdfgroup.xyz/app/&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// BridgeWebView继承了WebView，所以WebWiew的工具类都可以正常使用</span></span><br><span class="line">    <span class="type">WebSettings</span> <span class="variable">webSettings</span> <span class="operator">=</span> bridgeWebView.getSettings();</span><br><span class="line">    webSettings.setJavaScriptEnabled(<span class="literal">true</span>); <span class="comment">// 开启JavaScript</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 缓存设置</span></span><br><span class="line">    webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE); <span class="comment">// 不使用缓存</span></span><br><span class="line">    <span class="comment">// 自适应屏幕设置</span></span><br><span class="line">    webSettings.setUseWideViewPort(<span class="literal">true</span>); <span class="comment">// 将图片调整到适合webview的大小</span></span><br><span class="line">    webSettings.setLoadWithOverviewMode(<span class="literal">true</span>); <span class="comment">// 缩放至屏幕的大小</span></span><br><span class="line">    <span class="comment">// 缩放设置</span></span><br><span class="line">    webSettings.setSupportZoom(<span class="literal">true</span>); <span class="comment">// 支持缩放</span></span><br><span class="line">    webSettings.setBuiltInZoomControls(<span class="literal">true</span>); <span class="comment">// 设置内置的缩放控件</span></span><br><span class="line">    webSettings.setDisplayZoomControls(<span class="literal">false</span>); <span class="comment">// 隐藏原生的缩放控件</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>实现互调：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//注册函数，使JS能通过JSBridge调用Android</span></span><br><span class="line">bridgeWebView.registerHandler(<span class="string">&quot;openCamera&quot;</span>, <span class="keyword">new</span> <span class="title class_">BridgeHandler</span>() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handler</span><span class="params">(String data, CallBackFunction function)</span> &#123;</span><br><span class="line">        <span class="comment">//JS传递给Android</span></span><br><span class="line">        Toast.makeText(JsBridgeActivity.<span class="built_in">this</span>, data, Toast.LENGTH_LONG).show();</span><br><span class="line">        takePhoto();  <span class="comment">// 拍照</span></span><br><span class="line">        <span class="comment">//Android返回给JS的消息</span></span><br><span class="line">        function.onCallBack(<span class="string">&quot;success&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Android调用JS的方法（这里放在takePhoto()方法里面）</span></span><br><span class="line">bridgeWebView.callHandler(<span class="string">&quot;picPath&quot;</span>, pic64, <span class="keyword">new</span> <span class="title class_">CallBackFunction</span>() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onCallBack</span><span class="params">(String data)</span> &#123;</span><br><span class="line">        Toast.makeText(JsBridgeActivity.<span class="built_in">this</span>, data, Toast.LENGTH_LONG).show();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="JS配置"><a href="#JS配置" class="headerlink" title="JS配置"></a>JS配置</h4><p>JS需要封装一个工具类<code>jsBridge</code>（参考：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/b03eaa6fb38a">JSbridge 在Vue的封装与交互</a>）：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> isAndroid = navigator.<span class="property">userAgent</span>.<span class="title function_">indexOf</span>(<span class="string">&#x27;Android&#x27;</span>) &gt; -<span class="number">1</span> || navigator.<span class="property">userAgent</span>.<span class="title function_">indexOf</span>(<span class="string">&#x27;Adr&#x27;</span>) &gt; -<span class="number">1</span>;</span><br><span class="line"><span class="keyword">let</span> isiOS = !!navigator.<span class="property">userAgent</span>.<span class="title function_">match</span>(<span class="regexp">/\(i[^;]+;( U;)? CPU.+Mac OS X/</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//执行回调函数 这是必须要写的，用来创建一些设置</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">setupWebViewJavascriptBridge</span>(<span class="params">callback</span>) &#123;</span><br><span class="line">  <span class="comment">//Android使用</span></span><br><span class="line">  <span class="keyword">if</span> (isAndroid) &#123;</span><br><span class="line">    <span class="comment">//如果该对象已存在则直接执行</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable language_">window</span>.<span class="property">WebViewJavascriptBridge</span>) &#123;</span><br><span class="line">      <span class="title function_">callback</span>(<span class="variable language_">window</span>.<span class="property">WebViewJavascriptBridge</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">//否则添加事件监听再执行</span></span><br><span class="line">      <span class="variable language_">document</span>.<span class="title function_">addEventListener</span>(</span><br><span class="line">        <span class="string">&#x27;WebViewJavascriptBridgeReady&#x27;</span>,</span><br><span class="line">        <span class="function">() =&gt;</span> &#123;</span><br><span class="line">          <span class="title function_">callback</span>(<span class="variable language_">window</span>.<span class="property">WebViewJavascriptBridge</span>);</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="literal">false</span></span><br><span class="line">      );</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;tag，android&#x27;</span>);</span><br><span class="line">    sessionStorage.<span class="property">phoneType</span> = <span class="string">&#x27;android&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//iOS使用</span></span><br><span class="line">  <span class="keyword">if</span> (isiOS) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable language_">window</span>.<span class="property">WebViewJavascriptBridge</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="title function_">callback</span>(<span class="variable language_">window</span>.<span class="property">WebViewJavascriptBridge</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable language_">window</span>.<span class="property">WVJBCallbacks</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="variable language_">window</span>.<span class="property">WVJBCallbacks</span>.<span class="title function_">push</span>(callback);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable language_">window</span>.<span class="property">WVJBCallbacks</span> = [callback];</span><br><span class="line">    <span class="keyword">var</span> <span class="title class_">WVJBIframe</span> = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;iframe&#x27;</span>);</span><br><span class="line">    <span class="title class_">WVJBIframe</span>.<span class="property">style</span>.<span class="property">display</span> = <span class="string">&#x27;none&#x27;</span>;</span><br><span class="line">    <span class="title class_">WVJBIframe</span>.<span class="property">src</span> = <span class="string">&#x27;wvjbscheme://__BRIDGE_LOADED__&#x27;</span>;</span><br><span class="line">    <span class="variable language_">document</span>.<span class="property">documentElement</span>.<span class="title function_">appendChild</span>(<span class="title class_">WVJBIframe</span>);</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">document</span>.<span class="property">documentElement</span>.<span class="title function_">removeChild</span>(<span class="title class_">WVJBIframe</span>);</span><br><span class="line">    &#125;, <span class="number">0</span>);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;tag&#x27;</span>, <span class="string">&#x27;ios&#x27;</span>);</span><br><span class="line">    sessionStorage.<span class="property">phoneType</span> = <span class="string">&#x27;ios&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//注册回调函数，第一次连接时调用(进入H5页面) 初始化函数(android需要初始化,ios不用)</span></span><br><span class="line"><span class="title function_">setupWebViewJavascriptBridge</span>(<span class="function">(<span class="params">bridge</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;tag，setupWebViewJavascriptBridge&#x27;</span>);</span><br><span class="line">  <span class="keyword">if</span> (isAndroid) &#123;</span><br><span class="line">    <span class="comment">//初始化 一个无参数的handler供Android调用</span></span><br><span class="line">    bridge.<span class="title function_">init</span>(<span class="function">(<span class="params">message, responseCallback</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;JS got a message&#x27;</span>, message);</span><br><span class="line">      <span class="keyword">var</span> data = &#123;</span><br><span class="line">        <span class="string">&#x27;Javascript Responds&#x27;</span>: <span class="string">&#x27;Wee!&#x27;</span></span><br><span class="line">      &#125;;</span><br><span class="line">      <span class="title function_">responseCallback</span>(data);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="comment">// js调APP方法 （参数分别为:app提供的方法名  传给app的数据  回调）</span></span><br><span class="line">  <span class="title function_">callHandler</span>(<span class="params">name, data, callback</span>) &#123;</span><br><span class="line">    <span class="title function_">setupWebViewJavascriptBridge</span>(<span class="function">(<span class="params">bridge</span>) =&gt;</span> &#123;</span><br><span class="line">      bridge.<span class="title function_">callHandler</span>(name, data, callback);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// APP调js方法 （参数分别为:js提供的方法名  回调）</span></span><br><span class="line">  <span class="title function_">registerHandler</span>(<span class="params">name, callback</span>) &#123;</span><br><span class="line">    <span class="title function_">setupWebViewJavascriptBridge</span>(<span class="function">(<span class="params">bridge</span>) =&gt;</span> &#123;</span><br><span class="line">      bridge.<span class="title function_">registerHandler</span>(name, <span class="function">(<span class="params">data, responseCallback</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="title function_">callback</span>(data, responseCallback);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>之后在<code>main.js</code>中引入：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> jsBridge <span class="keyword">from</span> <span class="string">&#x27;./utils/jsBridge.js&#x27;</span>  <span class="comment">// h5和安卓原生联调</span></span><br><span class="line"><span class="title class_">Vue</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">$bridge</span> = jsBridge;</span><br></pre></td></tr></table></figure>
+
+<p>使用：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 调用Android的方法(JS调用Android)</span></span><br><span class="line"><span class="title function_">chooseImage</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;调用拍照&quot;</span>);</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">$bridge</span>.<span class="title function_">callHandler</span>(</span><br><span class="line">    <span class="string">&#x27;openCamera&#x27;</span></span><br><span class="line">    , &#123;<span class="string">&#x27;param&#x27;</span>: <span class="string">&quot;hello,android!&quot;</span>&#125;</span><br><span class="line">    , <span class="function">(<span class="params">responseData</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;JS接收到：&quot;</span> + responseData);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line"><span class="comment">// 注册接收图片路径的回调方法(Android调用JS)</span></span><br><span class="line"><span class="title function_">registerPicResultFunction</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">$bridge</span>.<span class="title function_">registerHandler</span>(<span class="string">&quot;picPath&quot;</span>, <span class="function">(<span class="params">data, responseCallback</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;JS接收到图片的base64编码：&quot;</span>);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(data);</span><br><span class="line">    <span class="keyword">let</span> base64 = data.<span class="title function_">replace</span>(<span class="regexp">/\+/g</span>, <span class="string">&quot;%2B&quot;</span>);  <span class="comment">// 加上这个保证上传的图片下载进来是正确的</span></span><br><span class="line">    <span class="comment">// 获得安卓的图片路径</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">picList</span>.<span class="title function_">push</span>(&#123;<span class="attr">url</span>: <span class="string">&quot;data:image/png;base64,&quot;</span> + base64&#125;);</span><br><span class="line">    <span class="comment">// 接收成功并返回值给安卓</span></span><br><span class="line">    <span class="title function_">responseCallback</span>(<span class="string">&quot;success&quot;</span>);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<h3 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h3><p>在开发中比较麻烦的问题就是调试了。比如写了一个地图定位程序，JS需要调用Android原生的定位方法。</p>
+<ol>
+<li><p>写一个Android获取当前定位信息的接口</p>
+</li>
+<li><p>JS调用后显示当前位置在地图上</p>
+</li>
+</ol>
+<p>当JS还需要依赖该定位数据写一些复杂的逻辑时，调试很麻烦。</p>
+<ol>
+<li>JS程序逻辑编写</li>
+<li>JS程序打包</li>
+<li>Android更新打包后的JS程序</li>
+<li>Android Studio连接手机进行调试，观察控制台输出数据</li>
+</ol>
+<p>发现问题后修改代码还得执行一次这个流程，真的心累。</p>
+<p>目前尚未找到合适的解决方案。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/APP/" rel="tag"># APP</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2022/04/22/%E5%9C%B0%E5%9B%BE%E6%9C%8D%E5%8A%A1%E5%8F%91%E5%B8%83/" rel="next" title="地图服务发布">
+      地图服务发布 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Android%E5%B5%8C%E5%85%A5Vue%E5%AE%9E%E7%8E%B0H5%E5%BA%94%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">Android嵌入Vue实现H5应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#WebView%E4%B8%8EJavaScript%E7%9A%84%E4%BA%A4%E4%BA%92"><span class="nav-number">1.1.</span> <span class="nav-text">WebView与JavaScript的交互</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JsBridge%E5%AE%9E%E7%8E%B0%E4%BA%A4%E4%BA%92"><span class="nav-number">1.2.</span> <span class="nav-text">JsBridge实现交互</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Android%E9%85%8D%E7%BD%AE"><span class="nav-number">1.2.1.</span> <span class="nav-text">Android配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JS%E9%85%8D%E7%BD%AE"><span class="nav-number">1.2.2.</span> <span class="nav-text">JS配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="nav-number">1.3.</span> <span class="nav-text">常见问题</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="XiaoShi"
+      src="/images/xiaoshi.png">
+  <p class="site-author-name" itemprop="name">XiaoShi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xiaoshi-hd" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiaoshi-hd" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">XiaoShi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+</body>
+</html>
